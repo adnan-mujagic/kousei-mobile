@@ -1,13 +1,29 @@
+import { useNavigation } from '@react-navigation/core';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { Provider } from 'react-redux'
+import Feed from './screens/Feed';
+import HomeScreen from './screens/HomeScreen';
+import { store } from './store';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <NavigationContainer>
+          <Stack.Navigator
+          initialRouteName={"Home"}
+          >
+            <Stack.Screen name="Home" component={HomeScreen} options={{headerShown:false}} />
+            <Stack.Screen name="Feed" component={Feed} options={{headerShown:false}} />
+            
+          </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
