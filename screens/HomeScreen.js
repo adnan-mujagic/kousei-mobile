@@ -52,15 +52,10 @@ const HomeScreen = () => {
                 const userData = await getUserDataWithUpdatedLocation(user._id, {longitude, latitude, updated: location.timestamp}, token );
                 
                 if(!userData?.errors){
-                    dispatch(setUser(userData))
+                    console.log(userData)
                 }
             }
         }
-        updateData()
-        
-    }, [location, token])
-
-    useEffect(() => {
         async function getMappedUsers(){
             if(user){
                 const usersToShowOnMap = await fetchDataWithoutAuth("/users", "GET");
@@ -72,7 +67,7 @@ const HomeScreen = () => {
             }
             
         }
-        getMappedUsers()
+        updateData().then(()=>getMappedUsers())
     }, [user])
 
 
