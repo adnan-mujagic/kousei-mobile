@@ -1,27 +1,25 @@
-import { useNavigation } from '@react-navigation/core';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import {StyleSheet} from 'react-native';
 import { Provider } from 'react-redux'
 import Feed from './screens/Feed';
 import HomeScreen from './screens/HomeScreen';
 import { store } from './store';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MainTabNavigator from './screens/MainTabNavigator';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LogInScreen from './screens/LogInScreen';
 
-const Stack = createStackNavigator();
+const MainStack = createNativeStackNavigator()
 
 export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-          <Stack.Navigator
-          initialRouteName={"Home"}
-          >
-            <Stack.Screen name="Home" component={HomeScreen} options={{headerShown:false}} />
-            <Stack.Screen name="Feed" component={Feed} options={{headerShown:false}} />
-            
-          </Stack.Navigator>
+        <MainStack.Navigator initialRouteName="MainTabNavigator">
+          <MainStack.Screen name="MainTabNavigator" component={MainTabNavigator} options={{headerShown:false}}/>
+          <MainStack.Screen name="LogIn" component={LogInScreen} options={{headerShown:false}}/>
+        </MainStack.Navigator>
       </NavigationContainer>
     </Provider>
   );
