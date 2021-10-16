@@ -6,7 +6,6 @@ const generalMainStyle = StyleSheet.create({
     row: {
         flexDirection:"row",
         alignItems:"center",
-        justifyContent:"space-between"
     },
     topMarginAndFlex: {
         flex:1,

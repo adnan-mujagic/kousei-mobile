@@ -21,7 +21,7 @@ const MainTabNavigator = () => {
                     ? 'map'
                     : 'map-outline';
                 } else if (route.name === 'Feed') {
-                  iconName = focused ? 'list' : 'ios-list';
+                  iconName = "md-compass-outline";
                 }
     
                 // You can return any component that you like here!

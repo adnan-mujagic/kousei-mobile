@@ -20,6 +20,6 @@ export default function prettyDate(date){
         return Math.floor(timeDifference / (1000*60*60*24*7)) + " weeks ago";
     }
     else{
-        return dateObject.getUTCDate().toLocaleString() +"-"+ dateObject.getUTCMonth().toLocaleString() + "-" + dateObject.getUTCFullYear().toString();
+        return dateObject.getUTCDate().toLocaleString() +"."+ dateObject.getUTCMonth().toLocaleString() + "." + dateObject.getUTCFullYear().toString();
     }
 }
