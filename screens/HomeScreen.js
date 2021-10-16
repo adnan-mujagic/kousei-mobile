@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react'
 import { Alert, Button, Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { selectToken, selectUser, setToken, setUser } from '../slices/mainSlice';
+import { selectMappedUsers, selectToken, selectUser, setMappedUsers, setToken, setUser } from '../slices/mainSlice';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import CustomMapMarker from '../components/CustomMapMarker';
@@ -10,6 +10,8 @@ import AppHeader from '../components/AppHeader';
 import { TouchableOpacity } from 'react-native';
 import grayColor from '../general_styles/grayColor';
 import getUserDataWithUpdatedLocation from '../general_functions/getUserDataWithUpdatedLocation';
+import fetchDataWithoutAuth from '../general_functions/fetchDataWithoutToken';
+import transformToMappableUsersOnly from '../general_functions/transformToMappableUsersOnly';
 
 const HomeScreen = () => {
 
@@ -27,6 +29,8 @@ const HomeScreen = () => {
 
     const token = useSelector(selectToken);
 
+    const mappedUsers = useSelector(selectMappedUsers);
+
     useEffect(() => {
         (async () => {
           let { status } = await Location.requestForegroundPermissionsAsync();
@@ -36,17 +40,17 @@ const HomeScreen = () => {
           }
     
           let {coords, timestamp} = await Location.getCurrentPositionAsync({});
-          setLocation({longitude: coords.longitude, latitude: coords.latitude, timestamp});
+          setLocation({longitude: coords.longitude, latitude: coords.latitude, updated: timestamp});
         })();
     }, []);
 
-    console.log(location)
-
     useEffect(() => {
         async function updateData(){
+            console.log("Update Fired")
             if(user?._id && token && location){
                 const {longitude, latitude} = location;
                 const userData = await getUserDataWithUpdatedLocation(user._id, {longitude, latitude, updated: location.timestamp}, token );
+                
                 if(!userData?.errors){
                     dispatch(setUser(userData))
                 }
@@ -55,6 +59,21 @@ const HomeScreen = () => {
         updateData()
         
     }, [location, token])
+
+    useEffect(() => {
+        async function getMappedUsers(){
+            if(user){
+                const usersToShowOnMap = await fetchDataWithoutAuth("/users", "GET");
+                if(usersToShowOnMap?.data){
+                    dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data)));
+                }
+            }else{
+                Alert.alert("Tip", "Log in to show users on the map!")
+            }
+            
+        }
+        getMappedUsers()
+    }, [user])
 
 
     let text = 'Waiting..';
@@ -68,6 +87,7 @@ const HomeScreen = () => {
     const logOut = () => {
         dispatch(setToken(null));
         dispatch(setUser(null));
+        dispatch(setMappedUsers(null))
     }
 
     console.log("homescreen")
@@ -81,8 +101,8 @@ const HomeScreen = () => {
             transparent
         >   
             <TouchableOpacity style={{flex:1,}} onPress={()=>setModalOpen(false)}>
-            <View style={{paddingTop:10, borderTopStartRadius:8, zIndex:5, borderTopEndRadius: 8, backgroundColor:"white", position:"absolute", bottom:0, width:Dimensions.get("screen").width}}>
-                {!user && <View>
+            <View style={{ backgroundColor:"white", position:"absolute", bottom:0, width:Dimensions.get("screen").width}}>
+                {!user && <View style={{elevation:5, backgroundColor:"white"}}>
                     <TouchableOpacity onPress={()=>{navigation.navigate("LogIn"); setModalOpen(false)}}>
                         <Text style={styles.optionText}>Log In</Text>
                     </TouchableOpacity>
@@ -113,7 +133,9 @@ const HomeScreen = () => {
             showsCompass={false}
             showsUserLocation={false}
         >
-            {(location && user?.coordinates) && <CustomMapMarker user={user}></CustomMapMarker>}
+            {(mappedUsers && mappedUsers?.length!=0) && mappedUsers.map(entry => (
+                <CustomMapMarker key={entry._id} user={entry}></CustomMapMarker>
+            ))}
         </MapView>
         
         </View>
@@ -134,10 +156,10 @@ const styles = StyleSheet.create({
         height:100
     },
     optionText:{
-        padding:10,
+        padding:16,
         borderBottomColor:grayColor(),
         borderBottomWidth:0.2,
-        color:"rgb(32,32,32)",
+        color:"rgb(100,100,100)",
         fontSize:16,
         fontWeight:"bold"
     }

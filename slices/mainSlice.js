@@ -5,6 +5,7 @@ const initialState = {
     token:null,
     requestedUser: null,
     requestedPost: null,
+    mappedUsers:null
 }
 
 export const mainSlice = createSlice({
@@ -22,12 +23,14 @@ export const mainSlice = createSlice({
         },
         setRequestedPost: (state, action) => {
             state.requestedPost = action.payload
+        },
+        setMappedUsers: (state, action) => {
+            state.mappedUsers = action.payload;
         }
-        
     }
 })
 
-export const {setUser, setToken, setRequestedPost, setRequestedUser} = mainSlice.actions;
+export const {setUser, setToken, setRequestedPost, setRequestedUser, setMappedUsers} = mainSlice.actions;
 
 //Selectors
 
@@ -35,6 +38,7 @@ export const selectUser = (state) => state.main.user;
 export const selectToken = (state) => state.main.token;
 export const selectRequestedUser = (state) => state.main.requestedUser;
 export const selectRequestedPost = (state) => state.main.requestedPost;
+export const selectMappedUsers = (state) => state.main.mappedUsers;
 
 
 export default mainSlice.reducer;

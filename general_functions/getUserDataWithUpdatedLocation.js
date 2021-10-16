@@ -6,7 +6,6 @@ export default async function getUserDataWithUpdatedLocation(id, coordinates, to
     let body = {
         coordinates: coordinates
     }
-    console.log(body)
     const user = await fetchDataWithAuth("/users/"+id, "PUT", body, token);
     const userPosts = await fetchDataWithoutAuth("/users/"+id+"/posts", "GET");
     let errors = null;
