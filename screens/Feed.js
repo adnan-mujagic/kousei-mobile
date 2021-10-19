@@ -39,7 +39,6 @@ const Feed = () => {
             }
             const res = await fetchDataWithAuth("/posts", "GET", undefined, token)
             if(res?.data){
-                console.log(res.data)
                 dispatch(setPosts(res.data));
             }
         }

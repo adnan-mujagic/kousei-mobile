@@ -6,5 +6,6 @@ export default function transformToMappableUsersOnly(users){
             mappableUsers.push({_id, username, profile_picture, coordinates})
         }
     }
+    console.log(mappableUsers)
     return mappableUsers;
 }
