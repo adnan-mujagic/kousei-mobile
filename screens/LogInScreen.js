@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/core'
 import jwtDecode from 'jwt-decode'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch } from 'react-redux'
 import CustomButton from '../components/CustomButton'
@@ -19,6 +19,8 @@ const LogInScreen = () => {
         password:""
     })
 
+    const [buttonDisabled, setButtonDisabled] = useState(false);
+
     const dispatch = useDispatch();
 
     const navigation = useNavigation()
@@ -36,6 +38,7 @@ const LogInScreen = () => {
             Alert.alert("Warning", "You must enter both username and password in order to proceed!")
         }
         else{
+            setButtonDisabled(true)
             const res = await fetchDataWithoutAuth("/users/login","POST", credentials);
             if(res?.token){
                 dispatch(setToken(res.token));
@@ -44,6 +47,10 @@ const LogInScreen = () => {
                 dispatch(setUser(userData));
                 navigation.goBack();
             }
+            else{
+                Alert.alert(res.status, "Please try again!")
+                setButtonDisabled(false)
+            }
             
             
         }
@@ -51,11 +58,11 @@ const LogInScreen = () => {
 
     return (
         <View style={[generalMainStyle.topMarginAndFlex, {justifyContent:"center"}]}>
-            <View style={{margin:20, elevation:5, backgroundColor:"white", borderRadius:8}}>
+            <View style={{margin:40, elevation:5, backgroundColor:"white", borderRadius:8}}>
                 <Text style={{color:primaryColor(), fontSize:26, padding:10, fontWeight:"bold"}}>Hello, mysterious user! You can log in here!</Text>
                 <CustomInput fieldName="username" placeholder={"Username..."} onChangeText={onChangeText}/>
                 <CustomInput fieldName="password" placeholder={"Password..."} password onChangeText={onChangeText}/>
-                <CustomButton title="LOG IN" onPress={onPress} type="solid" />
+                <CustomButton title="LOG IN" onPress={onPress} type="solid" disabled={buttonDisabled}/>
             </View> 
         </View>
         

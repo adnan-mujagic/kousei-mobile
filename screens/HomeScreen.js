@@ -46,18 +46,13 @@ const HomeScreen = () => {
 
     useEffect(() => {
         async function updateData(){
-            console.log("Update Fired")
             if(user?._id && token && location){
                 const {longitude, latitude, updated} = location;
                 const userData = await getUserDataWithUpdatedLocation(user._id, {longitude, latitude, updated}, token );
-                console.log(userData.username)
             }
-            
-            console.log("I finished my stuff!")
         }
         async function getMappedUsers(){
             if(user){
-                console.log("getting mapped users started!")
                 const usersToShowOnMap = await fetchDataWithoutAuth("/users", "GET");
                 if(usersToShowOnMap?.data){
                     dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data)));
@@ -65,7 +60,6 @@ const HomeScreen = () => {
             }else{
                 Alert.alert("Tip", "Log in to show users on the map!")
             }
-            console.log("getting mapped users finished")
         }
         updateData().then(()=>getMappedUsers())
     }, [user])
@@ -128,9 +122,9 @@ const HomeScreen = () => {
             showsCompass={false}
             showsUserLocation={false}
         >
-            {(mappedUsers && mappedUsers?.length!=0) && mappedUsers.map(entry => (
-                <CustomMapMarker key={entry._id} user={entry}></CustomMapMarker>
-            ))}
+            {(mappedUsers && mappedUsers?.length!=0) && mappedUsers.map(entry => {console.log(entry[0]); return(
+                <CustomMapMarker key={entry[0]._id} user={entry}></CustomMapMarker>
+            )})}
         </MapView>
         
         </View>

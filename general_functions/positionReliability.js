@@ -1,3 +1,5 @@
+import grayColor from "../general_styles/grayColor";
+
 export default function positionReliability(date){
     const dateObject = new Date(date);
     const timeDifference = Date.now() - dateObject.getTime();
@@ -8,5 +10,5 @@ export default function positionReliability(date){
     else if(timeDifference<=1000*60*60){
         return "rgb(255, 252, 51)"
     }
-    else return "crimson"
+    else return "orange"
 }

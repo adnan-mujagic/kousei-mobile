@@ -1,3 +1,5 @@
+import main from "./positionallyMerge";
+
 export default function transformToMappableUsersOnly(users){
     let mappableUsers = []
     for(let i = 0; i < users.length; i++){
@@ -6,6 +8,8 @@ export default function transformToMappableUsersOnly(users){
             mappableUsers.push({_id, username, profile_picture, coordinates})
         }
     }
+
+    main(mappableUsers, 0.00001);
     console.log(mappableUsers)
     return mappableUsers;
 }
