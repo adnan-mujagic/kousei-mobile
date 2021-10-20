@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react'
 import { Alert, Button, Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMappedUsers, selectToken, selectUser, setMappedUsers, setToken, setUser } from '../slices/mainSlice';
+import { selectMappedUsers, selectToken, selectUser, setMappedUsers, setPosts, setToken, setUser } from '../slices/mainSlice';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import CustomMapMarker from '../components/CustomMapMarker';
@@ -77,6 +77,7 @@ const HomeScreen = () => {
         dispatch(setToken(null));
         dispatch(setUser(null));
         dispatch(setMappedUsers(null))
+        dispatch(setPosts(null))
     }
 
     console.log("homescreen")

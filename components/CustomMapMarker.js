@@ -12,7 +12,6 @@ const CustomMapMarker = ({user}) => {
     console.log(user.length);
 
     const getArrayWithPositions = () => {
-        console.log("Hello world")
         let arrayWithPositions = [];
         for(let i=0;i<user.length;i++){
             arrayWithPositions.push({...user[i], position: i});
@@ -24,7 +23,7 @@ const CustomMapMarker = ({user}) => {
     const getUsersTogetherString = () => {
         let title = "";
         if(user.length>3){
-            title = user[0].username+", "+user[1].username+", "+user[2].username+" and more";
+            title = user[0].username+", "+user[1].username+", "+user[2].username+" and "+ (user.length-3) +" more";
         }
         else{
             for(let i=0; i<user.length; i++){
@@ -44,29 +43,31 @@ const CustomMapMarker = ({user}) => {
     }
 
     return (
-        <Marker coordinate={user[0].coordinates} >
+        <Marker coordinate={user[0].coordinates}>
         <View style={{}}>
             
             <View style={{borderWidth:0.5, borderColor:grayColor(), backgroundColor:"white", padding:10, borderRadius:5, maxWidth:150, maxHeight:160}}>
             
             <View style={{}}>
                 <FlatList
-                    data={getArrayWithPositions()}
+                    data={getArrayWithPositions().splice(0,3)}
                     horizontal
                     keyExtractor={(item) => item._id.toString()}
                     showsHorizontalScrollIndicator={false}
                     renderItem={({item})=> (
                         <View style={{ position:'relative', left:-25 * item.position}}>
-                        <View style={{borderWidth:3,borderRadius:28,overflow:"hidden", borderColor:"white",}}>
-                        <Image source={{uri:item.profile_picture}} style={{height:50, width:50,  resizeMode:"cover", }}/>
+                        <View style={{height:54, width:54, borderRadius:27, backgroundColor:"white", alignItems:"center", justifyContent:"center", overflow:"hidden", borderColor:"white",}}>
+                        <Image source={{uri:item.profile_picture}} style={{height:50, width:50, borderRadius:25,  resizeMode:"cover", }}/>
                         </View>
-                        <View style={{position:"absolute", bottom:3, left:6, width:12, height:12, borderRadius: 6, backgroundColor: positionReliability(item.coordinates.updated)}}></View>
+                        <View style={{position:"absolute", bottom:0, left:6, width:16, height:16, borderRadius:8, backgroundColor:"white", overflow:"hidden", alignItems:"center", justifyContent:"center"}}>
+                        <View style={{ width:12, height:12, borderRadius: 6, backgroundColor: positionReliability(item.coordinates.updated)}}></View>
+                        </View>
                         </View>
                     )}
                 />
             </View>
             <Text style={{fontSize:14, fontWeight:"bold", color:primaryColor()}}>{getUsersTogetherString()}</Text>
-            <Text style={{fontSize:12, color:grayColor()}}>{user.length==1?"was here": "were together"}</Text>
+            <Text style={{fontSize:14, color:grayColor()}}>{user.length==1?"was here": "were together"}</Text>
             </View>
         </View>
         </Marker>

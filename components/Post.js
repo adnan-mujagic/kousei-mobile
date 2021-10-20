@@ -6,10 +6,11 @@ import grayColor from '../general_styles/grayColor'
 import { Ionicons, Octicons } from '@expo/vector-icons';
 import jwtDecode from 'jwt-decode'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectToken, selectUser, setRequestedPost } from '../slices/mainSlice'
+import { selectToken, selectUser, setRequestedPost, setRequestedUser } from '../slices/mainSlice'
 import fetchDataWithAuth from '../general_functions/fetchDataWithAuth'
 import primaryColor from '../general_styles/primaryColor'
 import { useNavigation } from '@react-navigation/core'
+import fetchDataWithoutAuth from '../general_functions/fetchDataWithoutToken'
 
 const Post = ({item, disabled}) => {
 
@@ -71,12 +72,22 @@ const Post = ({item, disabled}) => {
         }
     }
 
+    const onPostUserPicturePress = async () => {
+        console.log(item.creator._id)
+        dispatch(setRequestedUser({_id: item.creator._id}))
+        navigation.navigate("ProfileScreen");
+    }
+
     return (
         <TouchableOpacity disabled={disabled} onPress={()=>onPostPress()}>
         <View style={{borderBottomWidth:0.5 , borderBottomColor:grayColor()}}>
             <View style={[generalMainStyle.row, {padding:10}]}>
+                <TouchableOpacity onPress={()=>onPostUserPicturePress()}>
                 <Image source={{uri: item.creator.profile_picture}} style={{height:40, width:40, resizeMode:"cover", borderRadius:20, marginRight:10, borderColor:grayColor(), borderWidth:0.5}}/> 
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>onPostUserPicturePress()}>
                 <Text style={{fontWeight:"bold", fontSize:16}}>{item.creator.username}</Text>
+                </TouchableOpacity>
             </View>
             {item.image!="" && item.image!=null && <View>
                 <Image source={{uri: item.image}} style={{width:Dimensions.get("window").width, aspectRatio:16 / 9, resizeMode:"cover"}}/>
