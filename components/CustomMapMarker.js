@@ -43,7 +43,7 @@ const CustomMapMarker = ({user}) => {
     }
 
     return (
-        <Marker coordinate={user[0].coordinates}>
+        <Marker title={"View Position Details"} onCalloutPress={()=>console.log("yo, callout")} coordinate={user[0].coordinates}>
         <View style={{}}>
             
             <View style={{borderWidth:0.5, borderColor:grayColor(), backgroundColor:"white", padding:10, borderRadius:5, maxWidth:150, maxHeight:160}}>

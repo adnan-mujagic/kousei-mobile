@@ -24,6 +24,8 @@ const ProfileScreen = () => {
 
     const [postType, setPostType] = useState("quotes");
 
+    const [isFollowed, setIsFollowed] = useState(false)
+
     const [displayedPosts, setDisplayedPosts] = useState(null)
 
     useEffect(()=>{
@@ -32,6 +34,8 @@ const ProfileScreen = () => {
             if(res){
                 dispatch(setRequestedUser(res));
                 setDisplayedPosts(filterPosts("quotes", res.posts))
+                let followed = findIfFollowed(res.followers, user._id);
+                setIsFollowed(followed);
             }
             else{
                 Alert.alert("Problem", res.status);
@@ -58,8 +62,6 @@ const ProfileScreen = () => {
 
     const filterPosts = (type, posts) => {
         let filteredPosts = [];
-        console.log(posts)
-        console.log(type=="quotes")
         if(type=="quotes"){
             for(let i=0; i<posts.length;i++){
                 if(posts[i].image==null || posts[i].image==""){
@@ -77,29 +79,36 @@ const ProfileScreen = () => {
         return filteredPosts;
     }
 
-    const isFollowed = () => {
+    const findIfFollowed = (followers, userId) => {
         console.log("Is followed Called")
-        for(let i = 0; i<requestedUser.followers; i++){
-            console.log(requestedUser.followers[i]._id)
+        console.log(followers)
+        for(let i = 0; i<followers.length; i++){
+            if(followers[i]._id == userId){
+                return true;
+            }
         }
         return false;
     }
 
-    const handleFollowOrUnfollow = async () => {
-        let suffix = "/users/"+requestedUser._id;
-        console.log(requestedUser.username);
-        console.log(user._id)
-        if(isFollowed()){
-            suffix+="/unfollow";
-        }
-        else{
-            suffix+="/followers";
+    const handleFollowUnfollow = async (type, userId) => {
+        let suffix = "/users/"+userId;
+        console.log(type)
+        if(type=="follow"){
+            suffix+="/followers"
+        }else{
+            suffix+="/unfollow"
         }
         const res = await fetchDataWithAuth(suffix, "PUT", undefined, token);
-        const data = await getAllUserData(requestedUser._id);
-        dispatch(setRequestedUser(data))
-        Alert.alert("Success", res.status);
-        
+        if(res){
+            Alert.alert(res.status);
+        }
+
+        const newUser = await getAllUserData(requestedUser._id);
+        if(newUser){
+            dispatch(setRequestedUser(newUser));
+        }
+
+        setIsFollowed(!isFollowed)
     }
 
     if(!requestedUser.all_fetched){
@@ -140,7 +149,7 @@ const ProfileScreen = () => {
             </View>
             </View>
             <View>
-                {user._id != requestedUser._id? <CustomButton onPress={handleFollowOrUnfollow} type="solid" title={isFollowed()?"Unfollow":"Follow"} /> : <CustomButton type="solid" onPress={onEditProfilePress} title="Edit Profile"/>}
+                {user._id != requestedUser._id? <CustomButton onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} type="solid" title={isFollowed?"Unfollow":"Follow"} /> : <CustomButton type="solid" onPress={onEditProfilePress} title="Edit Profile"/>}
             </View>
             <View style={[generalMainStyle.row,{ borderBottomColor:grayColor(), borderBottomWidth:0.5}]}>
                 <TouchableOpacity disabled={postType=="quotes"} onPress={()=>onQuotesPress()} style={[{ borderBottomWidth:0.5, width: Dimensions.get("window").width/2, padding:10, alignItems:"center"}, postType=="quotes"?{borderBottomColor:primaryColor()}:{borderBottomColor:"white"}]}>
@@ -150,7 +159,7 @@ const ProfileScreen = () => {
                 <Text>Media</Text>
                 </TouchableOpacity>
             </View>
-            <View>
+            <View style={{flex:1}}>
                 {postType=="quotes"?
                 <FlatList
                     data={displayedPosts}
@@ -162,7 +171,7 @@ const ProfileScreen = () => {
                             <Post item={{...item, creator:{username, profile_picture}}} />
                         )
                     }}
-
+                    style={{flex:1}}
                 />
                 :<Text>Pics</Text>
 
