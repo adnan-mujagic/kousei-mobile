@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
 import { Callout, Marker } from 'react-native-maps'
@@ -9,7 +10,7 @@ import primaryColor from '../general_styles/primaryColor'
 
 const CustomMapMarker = ({user}) => {
 
-    console.log(user.length);
+    const navigation = useNavigation();
 
     const getArrayWithPositions = () => {
         let arrayWithPositions = [];
@@ -43,7 +44,7 @@ const CustomMapMarker = ({user}) => {
     }
 
     return (
-        <Marker title={"View Position Details"} onCalloutPress={()=>console.log("yo, callout")} coordinate={user[0].coordinates}>
+        <Marker title={"View Position Details"} onCalloutPress={()=>navigation.navigate("PositionDetails", user)} coordinate={user[0].coordinates}>
         <View style={{}}>
             
             <View style={{borderWidth:0.5, borderColor:grayColor(), backgroundColor:"white", padding:10, borderRadius:5, maxWidth:150, maxHeight:160}}>

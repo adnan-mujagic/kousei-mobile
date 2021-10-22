@@ -60,9 +60,9 @@ const HomeScreen = () => {
         async function getMappedUsers(){
             console.log("getting mapped users")
             if(user){
-                const usersToShowOnMap = await fetchDataWithoutAuth("/users", "GET");
+                const usersToShowOnMap = await fetchDataWithoutAuth("/users/"+user._id+"/followers", "GET");
                 if(usersToShowOnMap?.data){
-                    dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data)));
+                    dispatch(setMappedUsers(transformToMappableUsersOnly([user,...usersToShowOnMap.data ])));
                 }
             }else{
                 Alert.alert("Tip", "Log in to show users on the map!")

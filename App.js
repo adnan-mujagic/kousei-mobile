@@ -11,6 +11,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LogInScreen from './screens/LogInScreen';
 import PostScreen from './screens/PostScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import PositionDetails from './screens/PositionDetails';
 
 const MainStack = createNativeStackNavigator()
 
@@ -23,6 +24,7 @@ export default function App() {
           <MainStack.Screen name="LogIn" component={LogInScreen} options={{headerShown:false}}/>
           <MainStack.Screen name="PostScreen" component={PostScreen} options={{headerShown:false}}/>
           <MainStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/>
+          <MainStack.Screen name="PositionDetails" component={PositionDetails} options={{headerShown:false}}/>
         </MainStack.Navigator>
       </NavigationContainer>
     </Provider>
