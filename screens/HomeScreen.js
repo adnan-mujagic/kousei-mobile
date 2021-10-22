@@ -62,7 +62,8 @@ const HomeScreen = () => {
             if(user){
                 const usersToShowOnMap = await fetchDataWithoutAuth("/users/"+user._id+"/followers", "GET");
                 if(usersToShowOnMap?.data){
-                    dispatch(setMappedUsers(transformToMappableUsersOnly([user,...usersToShowOnMap.data ])));
+                    const {longitude, latitude, updated} = location;
+                    dispatch(setMappedUsers(transformToMappableUsersOnly([{...user, coordinates: {longitude, latitude, updated}},...usersToShowOnMap.data ])));
                 }
             }else{
                 Alert.alert("Tip", "Log in to show users on the map!")
@@ -129,7 +130,7 @@ const HomeScreen = () => {
                     <TouchableOpacity onPress={()=>{navigation.navigate("LogIn"); setModalOpen(false)}}>
                         <Text style={styles.optionText}>Log In</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.navigate("SignUp")}>
                         <Text style={styles.optionText}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>}

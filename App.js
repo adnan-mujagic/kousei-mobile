@@ -12,6 +12,7 @@ import LogInScreen from './screens/LogInScreen';
 import PostScreen from './screens/PostScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import PositionDetails from './screens/PositionDetails';
+import SignUp from './screens/SignUp';
 
 const MainStack = createNativeStackNavigator()
 
@@ -22,6 +23,7 @@ export default function App() {
         <MainStack.Navigator initialRouteName="MainTabNavigator">
           <MainStack.Screen name="MainTabNavigator" component={MainTabNavigator} options={{headerShown:false}}/>
           <MainStack.Screen name="LogIn" component={LogInScreen} options={{headerShown:false}}/>
+          <MainStack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
           <MainStack.Screen name="PostScreen" component={PostScreen} options={{headerShown:false}}/>
           <MainStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/>
           <MainStack.Screen name="PositionDetails" component={PositionDetails} options={{headerShown:false}}/>

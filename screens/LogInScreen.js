@@ -59,7 +59,7 @@ const LogInScreen = () => {
     return (
         <View style={[generalMainStyle.topMarginAndFlex, {justifyContent:"center"}]}>
             <View style={{margin:40, elevation:5, backgroundColor:"white", borderRadius:8}}>
-                <Text style={{color:primaryColor(), fontSize:26, padding:10, fontWeight:"bold"}}>Hello, mysterious user! You can log in here!</Text>
+                <Text style={{marginHorizontal:10, marginTop:10, fontSize:18, fontWeight:"bold"}}>Enter your credentials</Text>
                 <CustomInput fieldName="username" placeholder={"Username..."} onChangeText={onChangeText}/>
                 <CustomInput fieldName="password" placeholder={"Password..."} password onChangeText={onChangeText}/>
                 <CustomButton title="LOG IN" onPress={onPress} type="solid" disabled={buttonDisabled}/>

@@ -1,4 +1,9 @@
 export default function main(data, tolerance){
+    console.log("MAIN FUNCTION SAYS DATA LENGTH IS:"+data.length)
+    if(data.length==1){
+        data[0] = [data[0]];
+        return;
+    }
     for(let i=0; i<data.length-1; i++){
         if(data[i]){
             data[i]=[data[i]];

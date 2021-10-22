@@ -62,7 +62,7 @@ const Feed = () => {
                         <TouchableOpacity onPress={()=>{navigation.navigate("LogIn"); setModalOpen(false)}}>
                             <Text style={styles.optionText}>Log In</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>navigation.navigate("SignUp")}>
                             <Text style={styles.optionText}>Sign Up</Text>
                         </TouchableOpacity>
                     </View>}
@@ -84,7 +84,7 @@ const Feed = () => {
                 )}
                 
             /> : <View>
-                <Text style={{color:grayColor(), fontWeight:"bold", fontSize:25, margin:10}}>Nothing to show here</Text>
+                <Text style={{ margin:10}}>Nothing to show here</Text>
             </View>}
         </View>
     )
