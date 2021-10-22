@@ -22,9 +22,16 @@ const Post = ({item, disabled}) => {
 
     const dispatch = useDispatch();
 
-    const decoded = jwtDecode(token)
+    const decodeToken = () => {
+        if(token){
+            return jwtDecode(token);
+        }
+        return null;
+    }
 
-    const [liked, setLiked] = useState(item.likes.includes(decoded.uid))
+    let decoded = decodeToken();
+
+    const [liked, setLiked] = useState(item.likes.includes(decoded?.uid))
 
     const [likes, setLikes] = useState(item.likes.length);
 
@@ -76,6 +83,10 @@ const Post = ({item, disabled}) => {
         console.log(item.creator._id)
         dispatch(setRequestedUser({_id: item.creator._id}))
         navigation.navigate("ProfileScreen");
+    }
+
+    if(!decoded || !token){
+        return null;
     }
 
     return (

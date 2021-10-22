@@ -11,6 +11,7 @@ import getUserData from '../general_functions/getUserData'
 import generalMainStyle from '../general_styles/generalMainStyle'
 import primaryColor from '../general_styles/primaryColor'
 import { setToken, setUser } from '../slices/mainSlice'
+import storeTokenToAsync from '../general_functions/storeTokenToAsync'
 
 const LogInScreen = () => {
 
@@ -41,6 +42,7 @@ const LogInScreen = () => {
             setButtonDisabled(true)
             const res = await fetchDataWithoutAuth("/users/login","POST", credentials);
             if(res?.token){
+                await storeTokenToAsync(res.token);
                 dispatch(setToken(res.token));
                 const decoded = jwtDecode(res.token);
                 const userData = await getUserData(decoded.uid)
@@ -51,8 +53,6 @@ const LogInScreen = () => {
                 Alert.alert(res.status, "Please try again!")
                 setButtonDisabled(false)
             }
-            
-            
         }
     }
 

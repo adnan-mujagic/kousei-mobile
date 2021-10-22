@@ -6,6 +6,7 @@ import AppHeader from '../components/AppHeader'
 import Post from '../components/Post'
 import fetchDataWithAuth from '../general_functions/fetchDataWithAuth'
 import fetchDataWithoutAuth from '../general_functions/fetchDataWithoutToken'
+import storeTokenToAsync from '../general_functions/storeTokenToAsync'
 import grayColor from '../general_styles/grayColor'
 import primaryColor from '../general_styles/primaryColor'
 import { selectPosts, selectToken, selectUser, setMappedUsers, setPosts, setToken, setUser } from '../slices/mainSlice'
@@ -24,7 +25,8 @@ const Feed = () => {
 
     const [modalOpen, setModalOpen] = useState(false)
 
-    const logOut = () => {
+    const logOut = async () => {
+        await storeTokenToAsync(null)
         dispatch(setToken(null));
         dispatch(setUser(null));
         dispatch(setMappedUsers(null))
@@ -32,12 +34,14 @@ const Feed = () => {
     }
 
     useEffect(() => {
+        console.log("getting posts")
         async function getPosts(){
             if(!token){
                 navigation.navigate("LogIn");
                 return;
             }
             const res = await fetchDataWithAuth("/posts", "GET", undefined, token)
+            console.log(res)
             if(res?.data){
                 dispatch(setPosts(res.data));
             }
@@ -71,7 +75,7 @@ const Feed = () => {
                 </TouchableOpacity>
             </Modal>
             <AppHeader modalOpen={modalOpen} setModalOpen={setModalOpen} />
-            {posts.length!=0 && <FlatList 
+            {posts?.length!=0 ? <FlatList 
                 data={posts}
                 keyExtractor={(item) => item._id.toString()}
                 showsVerticalScrollIndicator={false}
@@ -79,7 +83,9 @@ const Feed = () => {
                     <Post item={item}/>
                 )}
                 
-            /> }
+            /> : <View>
+                <Text style={{color:grayColor(), fontWeight:"bold", fontSize:25, margin:10}}>Nothing to show here</Text>
+            </View>}
         </View>
     )
 }

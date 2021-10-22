@@ -25,7 +25,7 @@ const Comment = ({item}) => {
     }
 
     return (
-        <View style={[generalMainStyle.row, {padding:5, justifyContent:"space-between"}]}>
+        <View style={[generalMainStyle.row, {padding:10, justifyContent:"space-between"}]}>
             <View style={[generalMainStyle.row, {flex:0.8}]}>
                 <Image source={{uri: item.creator.profile_picture}} style={{height:32, marginRight:5, width:32, borderRadius:16, borderColor:grayColor(), borderWidth:0.5}}/>
                 <View>

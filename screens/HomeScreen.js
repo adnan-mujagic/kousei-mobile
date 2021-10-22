@@ -12,6 +12,10 @@ import grayColor from '../general_styles/grayColor';
 import getUserDataWithUpdatedLocation from '../general_functions/getUserDataWithUpdatedLocation';
 import fetchDataWithoutAuth from '../general_functions/fetchDataWithoutToken';
 import transformToMappableUsersOnly from '../general_functions/transformToMappableUsersOnly';
+import storeTokenToAsync from '../general_functions/storeTokenToAsync';
+import jwtDecode from 'jwt-decode';
+import getUserData from '../general_functions/getUserData';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = () => {
 
@@ -45,13 +49,16 @@ const HomeScreen = () => {
     }, []);
 
     useEffect(() => {
+        
         async function updateData(){
+            console.log("updating data")
             if(user?._id && token && location){
                 const {longitude, latitude, updated} = location;
                 const userData = await getUserDataWithUpdatedLocation(user._id, {longitude, latitude, updated}, token );
             }
         }
         async function getMappedUsers(){
+            console.log("getting mapped users")
             if(user){
                 const usersToShowOnMap = await fetchDataWithoutAuth("/users", "GET");
                 if(usersToShowOnMap?.data){
@@ -64,6 +71,21 @@ const HomeScreen = () => {
         updateData().then(()=>getMappedUsers())
     }, [user])
 
+    useEffect(()=>{
+        async function checkLoggedIn(){
+            console.log("checking logged in")
+            let asyncToken = await getAsyncToken();
+            console.log(asyncToken);
+            if(asyncToken){
+                dispatch(setToken(asyncToken));
+                let decoded = jwtDecode(asyncToken);
+                let res = await getUserData(decoded.uid);
+                dispatch(setUser(res))
+            }
+        }
+        checkLoggedIn()
+    },[])
+
 
     let text = 'Waiting..';
     if (errorMsg) {
@@ -73,11 +95,22 @@ const HomeScreen = () => {
         text = JSON.stringify(location);
     }
 
-    const logOut = () => {
+    const logOut = async () => {
+        await storeTokenToAsync(null);
         dispatch(setToken(null));
         dispatch(setUser(null));
         dispatch(setMappedUsers(null))
         dispatch(setPosts(null))
+    }
+
+    const getAsyncToken = async () => {
+        try {
+            const value = await AsyncStorage.getItem('token')
+            return value;
+        } catch(e) {
+            // error reading value
+            console.log(e.message);
+        }
     }
 
     console.log("homescreen")
