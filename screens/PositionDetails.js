@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import ListItem from '../components/ListItem';
 import calculateEstimatedPosition from '../general_functions/calculateEstimatedPosition';
-import grayColor from '../general_styles/grayColor';
-import primaryColor from '../general_styles/primaryColor';
+import { MaterialIcons } from '@expo/vector-icons'; 
 
 const PositionDetails = ({route}) => {
 
@@ -26,17 +25,10 @@ const PositionDetails = ({route}) => {
             <View style={{paddingTop:50, paddingBottom:10, paddingHorizontal:10, elevation:5}}>
             <Text style={{fontWeight:"bold", fontSize:17}}>Position Details</Text>
             </View>
-            {estimatedCoordinates && <View style={{marginHorizontal:10, flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
-            <View>
-            <Text style={{color:"black"}}>Latitude</Text>
-            <Text style={{color:primaryColor(), fontWeight:"bold", fontSize:20}}>{Math.round(estimatedCoordinates.latitude * 10**7)/10**7}</Text>
+            <View style={{flexDirection:"row", alignItems:"center"}}>
+            <MaterialIcons style={{marginLeft:10, marginRight:5}} name="timer" size={25} color="black" />
+            <Text style={{ fontWeight:"bold"}}>Recently There</Text>
             </View>
-            <View>
-            <Text style={{color:"black"}}>Longitude</Text>
-            <Text style={{color:primaryColor(), fontWeight:"bold", fontSize:20}}>{Math.round(estimatedCoordinates.longitude * 10**7)/10**7}</Text>
-            </View>
-            </View>}
-            <Text style={{ fontWeight:"bold", marginHorizontal:10, marginTop:10}}>Recently There</Text>
             <FlatList 
                 data={users}
                 keyExtractor={(item)=>item._id.toString()}
