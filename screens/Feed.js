@@ -40,7 +40,7 @@ const Feed = () => {
                 navigation.navigate("LogIn");
                 return;
             }
-            const res = await fetchDataWithAuth("/posts", "GET", undefined, token)
+            const res = await fetchDataWithAuth("/posts?order=normal", "GET", undefined, token)
             console.log(res)
             if(res?.data){
                 dispatch(setPosts(res.data));

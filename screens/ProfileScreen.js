@@ -160,21 +160,20 @@ const ProfileScreen = () => {
                 </TouchableOpacity>
             </View>
             <View style={{flex:1}}>
-                {postType=="quotes"?
-                <FlatList
-                    data={displayedPosts}
-                    keyExtractor={(item)=>item._id.toString()}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({item})=> {
-                        const {username, profile_picture} = requestedUser;
-                        return (
-                            <Post item={{...item, creator:{username, profile_picture}}} />
-                        )
-                    }}
-                    style={{flex:1}}
-                />
-                :<Text>Pics</Text>
-
+                {displayedPosts?.length!=0?
+                    <FlatList
+                        data={displayedPosts}
+                        keyExtractor={(item)=>item._id.toString()}
+                        showsVerticalScrollIndicator={false}
+                        renderItem={({item})=> {
+                            const {username, profile_picture} = requestedUser;
+                            return (
+                                <Post item={{...item, creator:{username, profile_picture}}} />
+                            )
+                        }}
+                        style={{flex:1}}
+                    />:
+                    <Text style={{textAlign:"center", marginTop:20}}>No {postType} yet!</Text>
                 }
             </View>
         </View>

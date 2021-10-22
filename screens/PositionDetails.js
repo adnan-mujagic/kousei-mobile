@@ -26,11 +26,17 @@ const PositionDetails = ({route}) => {
             <View style={{paddingTop:50, paddingBottom:10, paddingHorizontal:10, elevation:5}}>
             <Text style={{fontWeight:"bold", fontSize:17}}>Position Details</Text>
             </View>
-            {estimatedCoordinates && <View style={{marginHorizontal:10}}>
-            <Text style={{color:grayColor()}}>Lat: {Math.round(estimatedCoordinates.latitude * 10**7)/10**7}</Text>
-            <Text style={{color:grayColor()}}>Lng: {Math.round(estimatedCoordinates.longitude * 10**7)/10**7}</Text>
-            
+            {estimatedCoordinates && <View style={{marginHorizontal:10, flexDirection:"row", alignItems:"center", justifyContent:"space-between"}}>
+            <View>
+            <Text style={{color:"black"}}>Latitude</Text>
+            <Text style={{color:primaryColor(), fontWeight:"bold", fontSize:20}}>{Math.round(estimatedCoordinates.latitude * 10**7)/10**7}</Text>
+            </View>
+            <View>
+            <Text style={{color:"black"}}>Longitude</Text>
+            <Text style={{color:primaryColor(), fontWeight:"bold", fontSize:20}}>{Math.round(estimatedCoordinates.longitude * 10**7)/10**7}</Text>
+            </View>
             </View>}
+            <Text style={{ fontWeight:"bold", marginHorizontal:10, marginTop:10}}>Recently There</Text>
             <FlatList 
                 data={users}
                 keyExtractor={(item)=>item._id.toString()}

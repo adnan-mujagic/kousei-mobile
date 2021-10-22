@@ -91,7 +91,7 @@ const Post = ({item, disabled}) => {
 
     return (
         <TouchableOpacity disabled={disabled} onPress={()=>onPostPress()}>
-        <View style={{borderBottomWidth:0.5 , borderBottomColor:grayColor()}}>
+        <View style={{borderBottomWidth:0.2 , borderBottomColor:grayColor()}}>
             <View style={[generalMainStyle.row, {padding:10}]}>
                 <TouchableOpacity onPress={()=>onPostUserPicturePress()}>
                 <Image source={{uri: item.creator.profile_picture}} style={{height:40, width:40, resizeMode:"cover", borderRadius:20, marginRight:10, borderColor:grayColor(), borderWidth:0.5}}/> 
