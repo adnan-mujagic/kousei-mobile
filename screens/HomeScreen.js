@@ -18,6 +18,7 @@ import getUserData from '../general_functions/getUserData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import getMappableUnmerged from '../general_functions/getMappableUnmerged';
 import UserSticker from '../components/UserSticker';
+import recencyCompare from '../general_functions/recencyCompare';
 
 const HomeScreen = () => {
 
@@ -48,9 +49,9 @@ const HomeScreen = () => {
                     latitude: lat,
                     longitude: lng,
                 },
-                zoom: 15
+                zoom: 18
             }
-            _map.current.animateCamera(newCamera, {duration: 700})
+            _map.current.animateCamera(newCamera, {duration: 1000})
 
         }
     }
@@ -84,7 +85,8 @@ const HomeScreen = () => {
                 if(usersToShowOnMap?.data){
                     const {longitude, latitude, updated} = location;
                     dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data)));
-                    setUserList(getMappableUnmerged(usersToShowOnMap.data));
+                    let unorderedUsers = getMappableUnmerged(usersToShowOnMap.data);
+                    setUserList(unorderedUsers.sort(recencyCompare));
                 }
             }else{
                 Alert.alert("Tip", "Log in to show users on the map!")
@@ -124,6 +126,7 @@ const HomeScreen = () => {
         dispatch(setUser(null));
         dispatch(setMappedUsers(null))
         dispatch(setPosts(null))
+        setModalOpen(false);
     }
 
     const getAsyncToken = async () => {
@@ -146,14 +149,6 @@ const HomeScreen = () => {
         >   
             <TouchableOpacity style={{flex:1,}} onPress={()=>setModalOpen(false)}>
             <View style={{ backgroundColor:"white", position:"absolute", bottom:0, width:Dimensions.get("screen").width}}>
-                {!user && <View style={{elevation:5, backgroundColor:"white"}}>
-                    <TouchableOpacity onPress={()=>{navigation.navigate("LogIn");}}>
-                        <Text style={styles.optionText}>Log In</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>navigation.navigate("SignUp")}>
-                        <Text style={styles.optionText}>Sign Up</Text>
-                    </TouchableOpacity>
-                </View>}
                 {user && <View>
                     <TouchableOpacity onPress={()=>{logOut()}}>
                         <Text style={styles.optionText}>Log Out</Text>
@@ -162,7 +157,7 @@ const HomeScreen = () => {
             </View>
             </TouchableOpacity>
         </Modal>
-        <AppHeader modalOpen={modalOpen} setModalOpen={setModalOpen}/>
+        <AppHeader modalOpen={modalOpen} modalDisabled={user?false:true} setModalOpen={setModalOpen}/>
         {user && <View style={{position:"absolute", marginBottom:20, width: Dimensions.get("window").width-40, bottom:0, paddingVertical:10, backgroundColor:"white", elevation:5, borderRadius:5, left:20, zIndex:20}}>
         <Text style={{marginBottom:10, fontWeight:"bold", marginLeft:10}}>Recent Users</Text>
         <FlatList 

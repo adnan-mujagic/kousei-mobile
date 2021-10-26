@@ -37,7 +37,6 @@ const Feed = () => {
         console.log("getting posts")
         async function getPosts(){
             if(!token){
-                navigation.navigate("LogIn");
                 return;
             }
             const res = await fetchDataWithAuth("/posts?order=normal", "GET", undefined, token)
@@ -51,29 +50,6 @@ const Feed = () => {
 
     return (
         <View style={{backgroundColor:"white", flex:1}}>
-            <Modal
-                transparent
-                visible={modalOpen}
-                onRequestClose={()=>setModalOpen(false)}
-            >
-                <TouchableOpacity style={{flex:1,}} onPress={()=>setModalOpen(false)}>
-                <View style={{ backgroundColor:"white", position:"absolute", bottom:0, width: Dimensions.get("screen").width}}>
-                    {!user && <View style={{elevation:5, backgroundColor:"white"}}>
-                        <TouchableOpacity onPress={()=>{navigation.navigate("LogIn"); setModalOpen(false)}}>
-                            <Text style={styles.optionText}>Log In</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>navigation.navigate("SignUp")}>
-                            <Text style={styles.optionText}>Sign Up</Text>
-                        </TouchableOpacity>
-                    </View>}
-                    {user && <View>
-                        <TouchableOpacity onPress={()=>{logOut(); setModalOpen(false)}}>
-                            <Text style={styles.optionText}>Log Out</Text>
-                        </TouchableOpacity>
-                    </View>}
-                </View>
-                </TouchableOpacity>
-            </Modal>
             {posts?.length!=0 ? <FlatList
                 style={{marginTop:40}} 
                 data={posts}

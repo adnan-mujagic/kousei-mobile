@@ -25,7 +25,7 @@ const ListItem = ({user, pressable}) => {
 
     return (
         <TouchableOpacity disabled={!pressable} onPress={()=>onListItemPress()}>
-        <View style={{padding: 10, borderBottomColor:grayColor(), borderBottomWidth:0.5, flexDirection:"row", alignItems:"center"}}>
+        <View style={{padding: 10, borderBottomColor:grayColor(), borderBottomWidth:0.2, flexDirection:"row", alignItems:"center"}}>
             <View style={{position:"relative"}}>
             <Image style={{height:50, width:50, borderRadius:25}} source={{uri: user.profile_picture}} />
             <View style={{position:"absolute", width:16, height:16, backgroundColor:"white", borderRadius:8, bottom:0, right:0, alignItems:"center", justifyContent:"center"}}>
