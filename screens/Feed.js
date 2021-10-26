@@ -74,8 +74,8 @@ const Feed = () => {
                 </View>
                 </TouchableOpacity>
             </Modal>
-            <AppHeader modalOpen={modalOpen} setModalOpen={setModalOpen} />
-            {posts?.length!=0 ? <FlatList 
+            {posts?.length!=0 ? <FlatList
+                style={{marginTop:40}} 
                 data={posts}
                 keyExtractor={(item) => item._id.toString()}
                 showsVerticalScrollIndicator={false}
@@ -84,7 +84,7 @@ const Feed = () => {
                 )}
                 
             /> : <View>
-                <Text style={{ margin:10}}>Nothing to show here</Text>
+                <Text style={{ margin:40}}>Nothing to show here</Text>
             </View>}
         </View>
     )

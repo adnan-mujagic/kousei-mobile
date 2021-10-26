@@ -47,7 +47,7 @@ const LogInScreen = () => {
                 const decoded = jwtDecode(res.token);
                 const userData = await getUserData(decoded.uid)
                 dispatch(setUser(userData));
-                navigation.goBack();
+                navigation.navigate("MainTabNavigator")
             }
             else{
                 Alert.alert(res.status, "Please try again!")

@@ -17,7 +17,6 @@ const CustomMapMarker = ({user}) => {
         for(let i=0;i<user.length;i++){
             arrayWithPositions.push({...user[i], position: i});
         }
-        console.log(arrayWithPositions)
         return arrayWithPositions
     }
 
@@ -47,7 +46,7 @@ const CustomMapMarker = ({user}) => {
         <Marker title={"View Position Details"} onCalloutPress={()=>navigation.navigate("PositionDetails", user)} coordinate={user[0].coordinates}>
         <View style={{}}>
             
-            <View style={{borderWidth:0.5, borderColor:grayColor(), backgroundColor:"rgb(32,32,32)", padding:10, borderRadius:5, width:150, maxHeight:160}}>
+            <View style={{borderWidth:0.5, borderColor:grayColor(), backgroundColor:"white", padding:10, borderRadius:5, maxWidth:150, maxHeight:160}}>
             
             <View style={{}}>
                 <FlatList

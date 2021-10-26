@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useState } from 'react'
-import { Alert, Button, Dimensions, Modal, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
+import { Alert, Button, Dimensions, FlatList, Modal, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMappedUsers, selectToken, selectUser, setMappedUsers, setPosts, setToken, setUser } from '../slices/mainSlice';
 import MapView, { Marker } from 'react-native-maps';
@@ -16,6 +16,8 @@ import storeTokenToAsync from '../general_functions/storeTokenToAsync';
 import jwtDecode from 'jwt-decode';
 import getUserData from '../general_functions/getUserData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import getMappableUnmerged from '../general_functions/getMappableUnmerged';
+import UserSticker from '../components/UserSticker';
 
 const HomeScreen = () => {
 
@@ -34,6 +36,24 @@ const HomeScreen = () => {
     const token = useSelector(selectToken);
 
     const mappedUsers = useSelector(selectMappedUsers);
+
+    const [userList, setUserList] = useState([]);
+
+    const _map = useRef();
+
+    const onStickerPress = (lat, lng) => {
+        if(_map.current){
+            const newCamera = {
+                center: {
+                    latitude: lat,
+                    longitude: lng,
+                },
+                zoom: 15
+            }
+            _map.current.animateCamera(newCamera, {duration: 700})
+
+        }
+    }
 
     useEffect(() => {
         (async () => {
@@ -60,10 +80,11 @@ const HomeScreen = () => {
         async function getMappedUsers(){
             console.log("getting mapped users")
             if(user){
-                const usersToShowOnMap = await fetchDataWithoutAuth("/users/"+user._id+"/followers", "GET");
+                const usersToShowOnMap = await fetchDataWithoutAuth("/users/", "GET");
                 if(usersToShowOnMap?.data){
                     const {longitude, latitude, updated} = location;
-                    dispatch(setMappedUsers(transformToMappableUsersOnly([{...user, coordinates: {longitude, latitude, updated}},...usersToShowOnMap.data ])));
+                    dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data)));
+                    setUserList(getMappableUnmerged(usersToShowOnMap.data));
                 }
             }else{
                 Alert.alert("Tip", "Log in to show users on the map!")
@@ -97,7 +118,8 @@ const HomeScreen = () => {
     }
 
     const logOut = async () => {
-        await storeTokenToAsync(null);
+        console.log("logged out")
+        await AsyncStorage.removeItem("token");
         dispatch(setToken(null));
         dispatch(setUser(null));
         dispatch(setMappedUsers(null))
@@ -114,8 +136,6 @@ const HomeScreen = () => {
         }
     }
 
-    console.log("homescreen")
-
     return (
         <View style={styles.main}>
         <Modal
@@ -127,7 +147,7 @@ const HomeScreen = () => {
             <TouchableOpacity style={{flex:1,}} onPress={()=>setModalOpen(false)}>
             <View style={{ backgroundColor:"white", position:"absolute", bottom:0, width:Dimensions.get("screen").width}}>
                 {!user && <View style={{elevation:5, backgroundColor:"white"}}>
-                    <TouchableOpacity onPress={()=>{navigation.navigate("LogIn"); setModalOpen(false)}}>
+                    <TouchableOpacity onPress={()=>{navigation.navigate("LogIn");}}>
                         <Text style={styles.optionText}>Log In</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>navigation.navigate("SignUp")}>
@@ -135,7 +155,7 @@ const HomeScreen = () => {
                     </TouchableOpacity>
                 </View>}
                 {user && <View>
-                    <TouchableOpacity onPress={()=>{logOut(); setModalOpen(false)}}>
+                    <TouchableOpacity onPress={()=>{logOut()}}>
                         <Text style={styles.optionText}>Log Out</Text>
                     </TouchableOpacity>
                 </View>}
@@ -143,13 +163,28 @@ const HomeScreen = () => {
             </TouchableOpacity>
         </Modal>
         <AppHeader modalOpen={modalOpen} setModalOpen={setModalOpen}/>
+        {user && <View style={{position:"absolute", marginBottom:20, width: Dimensions.get("window").width-40, bottom:0, paddingVertical:10, backgroundColor:"white", elevation:5, borderRadius:5, left:20, zIndex:20}}>
+        <Text style={{marginBottom:10, fontWeight:"bold", marginLeft:10}}>Recent Users</Text>
+        <FlatList 
+            data={userList}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(item)=>item._id.toString()}
+            renderItem={({item, index}) => (
+                <TouchableOpacity onPress={()=>onStickerPress(item.coordinates.latitude, item.coordinates.longitude)}>
+                <UserSticker user={item} onStickerPress={onStickerPress}/>
+                </TouchableOpacity>
+            )}
+        />
+        </View>}
         <MapView 
             initialRegion={location && {
                 latitude: location.latitude,
                 longitude: location.longitude,
                 latitudeDelta:0.001,
                 longitudeDelta: 0.001,
-            }} 
+            }}
+            ref={_map} 
             mapType="standard"
             showsPointsOfInterest={false} 
             showsUserLocation={true} 
@@ -161,7 +196,6 @@ const HomeScreen = () => {
                 <CustomMapMarker key={entry[0]._id} user={entry}></CustomMapMarker>
             )})}
         </MapView>
-        
         </View>
     )
 }

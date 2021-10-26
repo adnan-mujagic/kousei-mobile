@@ -2,7 +2,6 @@ import main from "./positionallyMerge";
 
 export default function transformToMappableUsersOnly(users){
     let mappableUsers = []
-    console.log(users)
     if(users.length!=0){
         for(let i = 0; i < users.length; i++){
             if(users[i].coordinates?.longitude && users[i].coordinates?.latitude){
@@ -14,6 +13,5 @@ export default function transformToMappableUsersOnly(users){
     
 
     main(mappableUsers, 0.00005);
-    console.log(mappableUsers)
     return mappableUsers;
 }

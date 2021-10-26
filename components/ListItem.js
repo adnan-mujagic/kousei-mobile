@@ -29,7 +29,7 @@ const ListItem = ({user, pressable}) => {
             <View style={{position:"relative"}}>
             <Image style={{height:50, width:50, borderRadius:25}} source={{uri: user.profile_picture}} />
             <View style={{position:"absolute", width:16, height:16, backgroundColor:"white", borderRadius:8, bottom:0, right:0, alignItems:"center", justifyContent:"center"}}>
-            <View style={{backgroundColor:positionReliability(), height:12, width:12, borderRadius:6}}></View>
+            <View style={{backgroundColor:positionReliability(user.coordinates.updated), height:12, width:12, borderRadius:6}}></View>
             </View>
             </View>
             <View style={{marginLeft:10}}>

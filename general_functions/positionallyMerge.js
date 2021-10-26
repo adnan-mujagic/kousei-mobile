@@ -1,5 +1,4 @@
 export default function main(data, tolerance){
-    console.log("MAIN FUNCTION SAYS DATA LENGTH IS:"+data.length)
     if(data.length==1){
         data[0] = [data[0]];
         return;

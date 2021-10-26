@@ -5,10 +5,10 @@ export default function positionReliability(date){
     const timeDifference = Date.now() - dateObject.getTime();
     //IF updated 5 mins ago show green
     if(timeDifference<=1000*60*5){
-        return "rgb(61, 255, 51)"
+        return "rgb(51, 255, 0)"
     }
     else if(timeDifference<=1000*60*60){
         return "rgb(255, 252, 51)"
     }
-    else return "orange"
+    else return "rgb(252, 3, 78)"
 }
