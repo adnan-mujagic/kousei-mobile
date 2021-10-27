@@ -23,12 +23,12 @@ const generalMainStyle = StyleSheet.create({
         borderColor:grayColor()
     },
     solidButton:{
-        padding:10,
+        padding:8,
         backgroundColor:primaryColor(),
         color:"white",
         margin:10,
         marginTop:0,
-        borderRadius:5
+        borderRadius:3
     }
 })
 

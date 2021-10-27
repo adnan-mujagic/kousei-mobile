@@ -28,8 +28,8 @@ const PostScreen = () => {
 
     return (
         <View style={{backgroundColor:"white", flex:1}}>
-            <View style={{paddingTop:50, paddingBottom:10, paddingHorizontal:10, elevation:5}}>
-                <Text style={{fontWeight:"bold", fontSize:17}}>Post</Text>
+            <View style={{paddingTop:50, backgroundColor:"white", paddingBottom:10, paddingHorizontal:10, elevation:5}}>
+                <Text style={{fontWeight:"bold", fontSize:17}}>POST</Text>
             </View>
             <Post item = {requestedPost} disabled/>
             {requestedPost.comments_enabled?<FlatList 

@@ -12,7 +12,7 @@ import primaryColor from '../general_styles/primaryColor'
 import { useNavigation } from '@react-navigation/core'
 import fetchDataWithoutAuth from '../general_functions/fetchDataWithoutToken'
 
-const Post = ({item, disabled}) => {
+const Post = ({item, disabled, handleDisabled}) => {
 
     const navigation = useNavigation();
 
@@ -93,10 +93,10 @@ const Post = ({item, disabled}) => {
         <TouchableOpacity disabled={disabled} onPress={()=>onPostPress()}>
         <View style={{borderBottomWidth:0.2 , borderBottomColor:grayColor()}}>
             <View style={[generalMainStyle.row, {padding:10}]}>
-                <TouchableOpacity onPress={()=>onPostUserPicturePress()}>
+                <TouchableOpacity disabled={handleDisabled} onPress={()=>onPostUserPicturePress()}>
                 <Image source={{uri: item.creator.profile_picture}} style={{height:40, width:40, resizeMode:"cover", borderRadius:20, marginRight:10, borderColor:grayColor(), borderWidth:0.5}}/> 
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>onPostUserPicturePress()}>
+                <TouchableOpacity disabled={handleDisabled} onPress={()=>onPostUserPicturePress()}>
                 <Text style={{fontWeight:"bold", fontSize:16}}>{item.creator.username}</Text>
                 </TouchableOpacity>
             </View>

@@ -5,6 +5,7 @@ import { Callout, Marker } from 'react-native-maps'
 import calculateEstimatedPosition from '../general_functions/calculateEstimatedPosition'
 import positionReliability from '../general_functions/positionReliability'
 import prettyDate from '../general_functions/prettyDate'
+import shouldRenderOnline from '../general_functions/shouldRenderOnline'
 import grayColor from '../general_styles/grayColor'
 import primaryColor from '../general_styles/primaryColor'
 
@@ -59,9 +60,9 @@ const CustomMapMarker = ({user}) => {
                         <View style={{height:54, width:54, borderRadius:27, backgroundColor:"white", alignItems:"center", justifyContent:"center", overflow:"hidden", borderColor:"white",}}>
                         <Image source={{uri:item.profile_picture}} style={{height:50, width:50, borderRadius:25,  resizeMode:"cover", }}/>
                         </View>
-                        <View style={{position:"absolute", bottom:0, left:6, width:16, height:16, borderRadius:8, backgroundColor:"white", overflow:"hidden", alignItems:"center", justifyContent:"center"}}>
+                        {shouldRenderOnline(item.coordinates.updated, 60) && <View style={{position:"absolute", bottom:0, left:6, width:16, height:16, borderRadius:8, backgroundColor:"white", overflow:"hidden", alignItems:"center", justifyContent:"center"}}>
                         <View style={{ width:12, height:12, borderRadius: 6, backgroundColor: positionReliability(item.coordinates.updated)}}></View>
-                        </View>
+                        </View>}
                         </View>
                     )}
                 />

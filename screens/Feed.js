@@ -1,15 +1,14 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, Alert, Dimensions, FlatList, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import AppHeader from '../components/AppHeader'
 import Post from '../components/Post'
 import fetchDataWithAuth from '../general_functions/fetchDataWithAuth'
-import fetchDataWithoutAuth from '../general_functions/fetchDataWithoutToken'
 import storeTokenToAsync from '../general_functions/storeTokenToAsync'
 import grayColor from '../general_styles/grayColor'
-import primaryColor from '../general_styles/primaryColor'
+import { AntDesign } from '@expo/vector-icons';
 import { selectPosts, selectToken, selectUser, setMappedUsers, setPosts, setToken, setUser } from '../slices/mainSlice'
+import primaryColor from '../general_styles/primaryColor'
 
 const Feed = () => {
 
@@ -50,8 +49,11 @@ const Feed = () => {
 
     return (
         <View style={{backgroundColor:"white", flex:1}}>
+            <View style={{paddingTop:40, paddingBottom:10, flexDirection:"row", alignItems:"center", backgroundColor:"white", elevation:5}} >
+            <Text style={{fontSize:20, fontWeight:"bold", marginLeft:10}}>FEED</Text>
+            </View>
             {posts?.length!=0 ? <FlatList
-                style={{marginTop:40}} 
+                
                 data={posts}
                 keyExtractor={(item) => item._id.toString()}
                 showsVerticalScrollIndicator={false}

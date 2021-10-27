@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import ListItem from '../components/ListItem';
 import calculateEstimatedPosition from '../general_functions/calculateEstimatedPosition';
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons';
 import recencyCompare from '../general_functions/recencyCompare';
+import primaryColor from '../general_styles/primaryColor';
+import grayColor from '../general_styles/grayColor';
 
 const PositionDetails = ({route}) => {
 
@@ -31,12 +33,11 @@ const PositionDetails = ({route}) => {
 
     return (
         <View style={{flex:1, backgroundColor:"white"}}>
-            <View style={{paddingTop:50, paddingBottom:10, paddingHorizontal:10, elevation:5}}>
-            <Text style={{fontWeight:"bold", fontSize:17}}>Position Details</Text>
+            <View style={{paddingTop:50, paddingBottom:10, flexDirection:"row", alignItems:"center", backgroundColor:"white", paddingHorizontal:10, elevation:5}}>
+            <Text style={{fontWeight:"bold", fontSize:20}}>POSITIONDETAILS</Text>
+            <View>
+            <AntDesign name="clockcircleo" size={22} color={primaryColor()} style={{marginLeft:0}}/>
             </View>
-            <View style={{flexDirection:"row", alignItems:"center", paddingBottom:10}}>
-            <MaterialIcons style={{marginLeft:10, marginRight:5}} name="timer" size={25} color="black" />
-            <Text style={{ fontWeight:"bold"}}>Recently There</Text>
             </View>
             <FlatList 
                 data={recentUsers}

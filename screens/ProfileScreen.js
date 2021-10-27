@@ -7,9 +7,11 @@ import Post from '../components/Post'
 import fetchDataWithAuth from '../general_functions/fetchDataWithAuth'
 import fetchDataWithoutAuth from '../general_functions/fetchDataWithoutToken'
 import getAllUserData from '../general_functions/getAllUserData'
+import trimString from '../general_functions/trimString'
 import generalMainStyle from '../general_styles/generalMainStyle'
 import grayColor from '../general_styles/grayColor'
 import primaryColor from '../general_styles/primaryColor'
+import { AntDesign } from '@expo/vector-icons';
 import { selectRequestedUser, selectToken, selectUser, setPosts, setRequestedUser } from '../slices/mainSlice'
 
 const ProfileScreen = () => {
@@ -123,29 +125,30 @@ const ProfileScreen = () => {
 
     return (
         <View style={{flex:1, backgroundColor:"white"}}>
-            <View style={{paddingTop:50, paddingBottom:10, paddingHorizontal:10, elevation:5}}>
-            <Text style={{fontWeight:"bold", fontSize:17}}>User Profile</Text>
+            <View style={{paddingTop:50, paddingBottom:10, backgroundColor:"white", flexDirection:"row", alignItems:"center", marginBottom:10, paddingHorizontal:10, elevation:5}}>
+            <Text style={{fontWeight:"bold", fontSize:20}}>USERPROFILE</Text>
+            <AntDesign name="user" size={20} color={primaryColor()} />
             </View>
             <View style={generalMainStyle.row}>
                 <Image source={{uri:requestedUser.profile_picture}} style={{height:90, width:90, marginLeft:10, borderRadius:45, borderWidth:0.5, borderColor:grayColor(), marginBottom:10}} />
                 <View style={{marginLeft:10}}>
                 <Text style={{fontWeight:"bold", fontSize:18}}>{requestedUser.full_name}</Text>
-                <Text style={{color:grayColor()}}>{requestedUser.username}</Text>
-                <Text>{requestedUser.biography}</Text>
+                <Text style={{color:grayColor()}}>@{requestedUser.username}</Text>
+                {requestedUser.bio && <Text style={{width:Dimensions.get("window").width*0.7}}>{trimString(requestedUser.bio, 50)}</Text>}
                 </View>
             </View>
             <View style={{flexDirection:"row", justifyContent:"space-between", margin:10, marginTop:0}}>
             <View>
-            <Text style={{fontWeight:"bold"}}>Posts</Text>
-            <Text>{requestedUser.posts.length}</Text>
+            <Text style={{fontSize:14}}>Posts</Text>
+            <Text style={{fontSize:24}}>{requestedUser.posts.length}</Text>
             </View>
             <View >
-            <Text style={{fontWeight:"bold",}}>Followers</Text>
-            <Text>{requestedUser.followers.length}</Text>
+            <Text style={{fontSize:14}}>Followers</Text>
+            <Text style={{fontSize:24}}>{requestedUser.followers.length}</Text>
             </View>
-            <View>
-            <Text style={{fontWeight:"bold",}}>Following</Text>
-            <Text>{requestedUser.following.length}</Text>
+            <View >
+            <Text style={{fontSize:14}}>Following</Text>
+            <Text style={{fontSize:24}}>{requestedUser.following.length}</Text>
             </View>
             </View>
             <View>
@@ -168,12 +171,12 @@ const ProfileScreen = () => {
                         renderItem={({item})=> {
                             const {username, profile_picture} = requestedUser;
                             return (
-                                <Post item={{...item, creator:{username, profile_picture}}} />
+                                <Post handleDisabled item={{...item, creator:{username, profile_picture}}} />
                             )
                         }}
                         style={{flex:1}}
                     />:
-                    <Text style={{textAlign:"center", marginTop:20}}>No {postType} yet!</Text>
+                    <Text style={{textAlign:"center", marginTop:20, fontSize:16}}>No {postType} yet!</Text>
                 }
             </View>
         </View>
