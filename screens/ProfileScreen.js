@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Dimensions, FlatList, Image, StyleSheet, Text, View } from 'react-native'
+import { Alert, Dimensions, FlatList, Image, StyleSheet, Switch, Text, ToastAndroid, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomButton from '../components/CustomButton'
@@ -12,7 +12,8 @@ import generalMainStyle from '../general_styles/generalMainStyle'
 import grayColor from '../general_styles/grayColor'
 import primaryColor from '../general_styles/primaryColor'
 import { AntDesign } from '@expo/vector-icons';
-import { selectRequestedUser, selectToken, selectUser, setPosts, setRequestedUser } from '../slices/mainSlice'
+import { selectRequestedUser, selectToken, selectUser, setPosts, setRequestedUser, setUser } from '../slices/mainSlice'
+import { Feather } from '@expo/vector-icons';
 
 const ProfileScreen = () => {
 
@@ -102,7 +103,7 @@ const ProfileScreen = () => {
         }
         const res = await fetchDataWithAuth(suffix, "PUT", undefined, token);
         if(res){
-            Alert.alert(res.status);
+            ToastAndroid.show(res.status, ToastAndroid.SHORT)
         }
 
         const newUser = await getAllUserData(requestedUser._id);
@@ -126,8 +127,7 @@ const ProfileScreen = () => {
     return (
         <View style={{flex:1, backgroundColor:"white"}}>
             <View style={{paddingTop:50, paddingBottom:10, backgroundColor:"white", flexDirection:"row", alignItems:"center", marginBottom:10, paddingHorizontal:10, elevation:5}}>
-            <Text style={{fontWeight:"bold", fontSize:20}}>USERPROFILE</Text>
-            <AntDesign name="user" size={20} color={primaryColor()} />
+            <Text style={{fontWeight:"bold", fontSize:20}}>PROFILE</Text>
             </View>
             <View style={generalMainStyle.row}>
                 <Image source={{uri:requestedUser.profile_picture}} style={{height:90, width:90, marginLeft:10, borderRadius:45, borderWidth:0.5, borderColor:grayColor(), marginBottom:10}} />
@@ -152,7 +152,7 @@ const ProfileScreen = () => {
             </View>
             </View>
             <View>
-                {user._id != requestedUser._id? <CustomButton onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} type="solid" title={isFollowed?"Unfollow":"Follow"} /> : <CustomButton type="solid" onPress={onEditProfilePress} title="Edit Profile"/>}
+                {user._id != requestedUser._id? <CustomButton onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} title={isFollowed?"Unfollow":"Follow"} /> : <CustomButton onPress={onEditProfilePress} title="Edit Profile"/>}
             </View>
             <View style={[generalMainStyle.row,{ borderBottomColor:grayColor(), borderBottomWidth:0.5}]}>
                 <TouchableOpacity disabled={postType=="quotes"} onPress={()=>onQuotesPress()} style={[{ borderBottomWidth:0.5, width: Dimensions.get("window").width/2, padding:10, alignItems:"center"}, postType=="quotes"?{borderBottomColor:primaryColor()}:{borderBottomColor:"white"}]}>

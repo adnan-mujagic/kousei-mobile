@@ -9,6 +9,8 @@ import grayColor from '../general_styles/grayColor'
 import { AntDesign } from '@expo/vector-icons';
 import { selectPosts, selectToken, selectUser, setMappedUsers, setPosts, setToken, setUser } from '../slices/mainSlice'
 import primaryColor from '../general_styles/primaryColor'
+import CreatePost from '../components/CreatePost'
+import lightBlack from '../general_functions/lightBlack'
 
 const Feed = () => {
 
@@ -39,7 +41,6 @@ const Feed = () => {
                 return;
             }
             const res = await fetchDataWithAuth("/posts?order=normal", "GET", undefined, token)
-            console.log(res)
             if(res?.data){
                 dispatch(setPosts(res.data));
             }
@@ -52,7 +53,8 @@ const Feed = () => {
             <View style={{paddingTop:40, paddingBottom:10, flexDirection:"row", alignItems:"center", backgroundColor:"white", elevation:5}} >
             <Text style={{fontSize:20, fontWeight:"bold", marginLeft:10}}>FEED</Text>
             </View>
-            {posts?.length!=0 ? <FlatList
+            {user && <CreatePost />}
+            {posts ? <FlatList
                 
                 data={posts}
                 keyExtractor={(item) => item._id.toString()}
@@ -62,7 +64,8 @@ const Feed = () => {
                 )}
                 
             /> : <View>
-                <Text style={{ margin:40}}>Nothing to show here</Text>
+                <Text style={{ marginHorizontal:40, color:lightBlack(), marginTop:40, fontSize:20, fontWeight:"bold"}}>Nothing to show here, make sure you are logged in!</Text>
+                <Text style={{ marginHorizontal:40, color:primaryColor(), fontSize:40, fontWeight:"bold"}}>{"</>"}</Text>
             </View>}
         </View>
     )
