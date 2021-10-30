@@ -101,12 +101,12 @@ const Post = ({item, disabled, handleDisabled}) => {
                 </TouchableOpacity>
             </View>
             {item.image!="" && item.image!=null && <View>
-                <Image source={{uri: item.image}} style={{width:Dimensions.get("window").width, aspectRatio:16 / 9, resizeMode:"cover"}}/>
+                <Image source={{uri: item.image}} style={{width:Dimensions.get("window").width, aspectRatio:1 / 1, resizeMode:"cover"}}/>
             </View>}
             <View>
                 <Text style={{margin:10, marginTop: item.image? 10: 0}}>{item.caption}</Text>
                 <View style={[generalMainStyle.row, {marginHorizontal:10, marginBottom:10,}]}>
-                    {liked? <TouchableOpacity onPress={()=> onHeartClick()}><Ionicons name="heart" size={24} color={primaryColor()} /></TouchableOpacity> : <TouchableOpacity onPress={()=> onHeartClick()}><Ionicons name="heart-outline" size={24} color={"rgb(32,32,32)"} /></TouchableOpacity>}
+                    {liked? <TouchableOpacity onPress={()=> onHeartClick()}><Ionicons name="heart" size={24} color={"crimson"} /></TouchableOpacity> : <TouchableOpacity onPress={()=> onHeartClick()}><Ionicons name="heart-outline" size={24} color={"rgb(32,32,32)"} /></TouchableOpacity>}
                     <TouchableOpacity disabled={!item.comments_enabled} style={{marginLeft:5}} onPress={()=>setCommentsOpen(!commentsOpen)}><Octicons name="comment" size={22} color={item.comments_enabled?"black":grayColor()} /></TouchableOpacity>
                 </View>
                 <Text style={{color:"rgb(32,32,32)", marginHorizontal:10}}>{likes} likes</Text>

@@ -2,12 +2,15 @@ import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native'
 import { Callout, Marker } from 'react-native-maps'
+import { useSelector } from 'react-redux'
 import calculateEstimatedPosition from '../general_functions/calculateEstimatedPosition'
 import positionReliability from '../general_functions/positionReliability'
 import prettyDate from '../general_functions/prettyDate'
 import shouldRenderOnline from '../general_functions/shouldRenderOnline'
 import grayColor from '../general_styles/grayColor'
 import primaryColor from '../general_styles/primaryColor'
+import { selectUser } from '../slices/mainSlice'
+import MarkerWarning from './MarkerWarning'
 
 const CustomMapMarker = ({user}) => {
 
@@ -19,6 +22,17 @@ const CustomMapMarker = ({user}) => {
             arrayWithPositions.push({...user[i], position: i});
         }
         return arrayWithPositions
+    }
+
+    const loggedInUser = useSelector(selectUser);
+
+    const checkIfLoggedInUserHere = () => {
+        for(let i=0; i<user.length; i++){
+            if(user[i]._id == loggedInUser?._id){
+                return true;
+            }
+        }
+        return false;
     }
 
     const getUsersTogetherString = () => {
@@ -47,8 +61,8 @@ const CustomMapMarker = ({user}) => {
         <Marker title={"View Position Details"} onCalloutPress={()=>navigation.navigate("PositionDetails", user)} coordinate={user[0].coordinates}>
         <View style={{}}>
             
-            <View style={{borderWidth:0.5, borderColor:grayColor(), backgroundColor:"white", padding:10, borderRadius:5, maxWidth:150, maxHeight:160}}>
-            
+            <View style={{borderWidth:0.3, borderColor:grayColor(), backgroundColor:"white", padding:10, borderRadius:5, maxWidth:150, maxHeigth:200}}>
+            {(checkIfLoggedInUserHere() && !loggedInUser?.shown_on_map) && <MarkerWarning message="Only you can view your location! If you want to be visible to others change your profile settings!"/>}
             <View style={{}}>
                 <FlatList
                     data={getArrayWithPositions().splice(0,3)}

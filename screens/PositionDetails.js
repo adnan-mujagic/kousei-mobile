@@ -36,7 +36,6 @@ const PositionDetails = ({route}) => {
             <View style={{paddingTop:50, paddingBottom:10, flexDirection:"row", alignItems:"center", backgroundColor:"white", paddingHorizontal:10, elevation:5}}>
             <Text style={{fontWeight:"bold", fontSize:20}}>POSITION</Text>
             <View>
-            <AntDesign name="clockcircleo" size={22} color={primaryColor()} style={{marginLeft:0}}/>
             </View>
             </View>
             <FlatList 

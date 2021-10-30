@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useRef, useState } from 'react'
 import { Alert, Button, Dimensions, FlatList, Modal, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMappedUsers, selectToken, selectUser, setMappedUsers, setPosts, setToken, setUser } from '../slices/mainSlice';
+import { selectMappedUsers, selectToken, selectUser, setMappedUsers, setPosts, setRequestedUser, setToken, setUser } from '../slices/mainSlice';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import CustomMapMarker from '../components/CustomMapMarker';
@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import getMappableUnmerged from '../general_functions/getMappableUnmerged';
 import UserSticker from '../components/UserSticker';
 import recencyCompare from '../general_functions/recencyCompare';
+import primaryColor from '../general_styles/primaryColor';
 
 const HomeScreen = () => {
 
@@ -84,8 +85,8 @@ const HomeScreen = () => {
                 const usersToShowOnMap = await fetchDataWithoutAuth("/users/", "GET");
                 if(usersToShowOnMap?.data){
                     const {longitude, latitude, updated} = location;
-                    dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data)));
-                    let unorderedUsers = getMappableUnmerged(usersToShowOnMap.data);
+                    dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data, user)));
+                    let unorderedUsers = getMappableUnmerged(usersToShowOnMap.data, user);
                     setUserList(unorderedUsers.sort(recencyCompare));
                 }
             }else{
@@ -139,6 +140,11 @@ const HomeScreen = () => {
         }
     }
 
+    const visitOwnProfile = () => {
+        dispatch(setRequestedUser(user));
+        navigation.navigate("ProfileScreen");
+    }
+
     return (
         <View style={styles.main}>
         <Modal
@@ -148,7 +154,7 @@ const HomeScreen = () => {
             transparent
         >   
             <TouchableOpacity style={{flex:1,}} onPress={()=>setModalOpen(false)}>
-            <View style={{ backgroundColor:"white", position:"absolute", bottom:0, width:Dimensions.get("screen").width}}>
+            <View style={{ backgroundColor:"white", elevation:5, position:"absolute", top: 80, right:10, maxWidth:Dimensions.get("screen").width - 200, minWidth:150, borderRadius:5}}>
                 {user && <View>
                     <TouchableOpacity onPress={()=>{logOut()}}>
                         <Text style={styles.optionText}>Log Out</Text>
@@ -157,8 +163,13 @@ const HomeScreen = () => {
             </View>
             </TouchableOpacity>
         </Modal>
+        {user && <View style={{position: "absolute", zIndex:20, top:105, left:10}}>
+            <TouchableOpacity onPress={()=>visitOwnProfile()} style={{paddingHorizontal:10, paddingVertical:8, elevation:5, backgroundColor:primaryColor(), borderRadius:5}}>
+                <Text style={{color: "white"}}>Your Profile</Text>
+            </TouchableOpacity>
+        </View>}
         <AppHeader modalOpen={modalOpen} modalDisabled={user?false:true} setModalOpen={setModalOpen}/>
-        {user && <View style={{position:"absolute", marginBottom:20, width: Dimensions.get("window").width-40, bottom:0, paddingVertical:10, backgroundColor:"white", elevation:5, borderRadius:5, left:20, zIndex:20}}>
+        {user && <View style={{position:"absolute", marginBottom:10, width: Dimensions.get("window").width-20, bottom:0, paddingVertical:10, backgroundColor:"white", elevation:5, borderRadius:5, left:10, zIndex:20}}>
         <Text style={{marginBottom:10, fontWeight:"bold", marginLeft:10}}>Recent Users</Text>
         <FlatList 
             data={userList}
@@ -209,11 +220,11 @@ const styles = StyleSheet.create({
         height:100
     },
     optionText:{
-        padding:16,
+        paddingVertical: 8,
+        paddingHorizontal:10,
         borderBottomColor:grayColor(),
         borderBottomWidth:0.2,
         color:"rgb(100,100,100)",
-        fontSize:16,
         fontWeight:"bold"
     }
     

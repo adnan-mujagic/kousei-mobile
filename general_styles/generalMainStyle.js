@@ -27,8 +27,9 @@ const generalMainStyle = StyleSheet.create({
         backgroundColor:primaryColor(),
         color:"white",
         margin:10,
-        marginTop:0,
-        borderRadius:3
+        borderRadius:3,
+        borderColor:grayColor(),
+        borderWidth:0.5,
     }
 })
 

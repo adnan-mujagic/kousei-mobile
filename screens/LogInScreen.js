@@ -120,7 +120,7 @@ const LogInScreen = () => {
                 <CustomInput value={credentials.password} fieldName="password" placeholder={"Password..."} password onChangeText={onChangeText}/>
                 <CustomInput value={credentials.email} fieldName="email" placeholder={"E-Mail..."} onChangeText={onChangeText}/>
                 <CustomInput value={credentials.full_name} fieldName="full_name" placeholder={"Full Name..."} onChangeText={onChangeText}/>
-                <NumberPicker value={credentials.age} setValue={onAgeChange}/>
+                <NumberPicker value={credentials.age} setValue={onAgeChange} placeholder="Age:"/>
                 <CustomButton title="REGISTER" onPress={onRegister} type="solid" disabled={buttonsDisabled}/>
                 <TouchableOpacity onPress={()=>setLoginOrSignUp("login")} style={{marginBottom:10, marginLeft:10}}>
                     <Text style={{fontSize:16}}>Want to log in?</Text>

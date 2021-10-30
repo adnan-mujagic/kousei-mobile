@@ -14,10 +14,13 @@ import primaryColor from '../general_styles/primaryColor'
 import { AntDesign } from '@expo/vector-icons';
 import { selectRequestedUser, selectToken, selectUser, setPosts, setRequestedUser, setUser } from '../slices/mainSlice'
 import { Feather } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/core'
 
 const ProfileScreen = () => {
 
     const dispatch = useDispatch();
+
+    const navigation = useNavigation()
 
     const requestedUser = useSelector(selectRequestedUser);
 
@@ -49,6 +52,7 @@ const ProfileScreen = () => {
 
     const onEditProfilePress = () => {
         console.log("EditProfilePressed")
+        navigation.navigate("EditProfile")
     }
 
     const onQuotesPress = () => {

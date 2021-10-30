@@ -10,7 +10,7 @@ const CustomButton = ({onPress, title, type, disabled=false}) => {
     
     return (
         <View>
-            <TouchableOpacity disabled={disabled} onPress={()=>onPress()} style={(type=="solid" && !disabled)?generalMainStyle.solidButton:{backgroundColor:"white", borderRadius:5, borderColor:grayColor(), borderWidth:0.5, padding:8, margin:10}}>
+            <TouchableOpacity disabled={disabled} onPress={()=>onPress()} style={(type=="solid" && !disabled)?generalMainStyle.solidButton:{backgroundColor:"white", borderRadius:3, borderColor:grayColor(), borderWidth:0.5, padding:8, margin:10}}>
                 <Text style={{fontSize:15, textAlign:"center", color:type=="solid"?"white":primaryColor()}}>{title}</Text>
             </TouchableOpacity>
         </View>
