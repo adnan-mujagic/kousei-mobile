@@ -175,10 +175,10 @@ const ProfileScreen = () => {
             <View>
                 {user._id != requestedUser._id?
                     <View style={{flexDirection:"row"}}> 
-                    <CustomButton onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} title={isFollowed?"Unfollow":"Follow"} /> 
-                    <CustomButton title="Message" onPress={() => onMessagePress()}/>
+                    <CustomButton responsive numCols={2} onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} title={isFollowed?"Unfollow":"Follow"} /> 
+                    <CustomButton responsive numCols={2} title="Message" onPress={() => onMessagePress()}/>
                     </View> : 
-                    <CustomButton onPress={onEditProfilePress} title="Edit Profile"/>}
+                    <CustomButton onPress={onEditProfilePress} responsive title="Edit Profile"/>}
             </View>
             <View style={[generalMainStyle.row,{ borderBottomColor:grayColor(), borderBottomWidth:0.5}]}>
                 <TouchableOpacity disabled={postType=="quotes"} onPress={()=>onQuotesPress()} style={[{ borderBottomWidth:0.5, width: Dimensions.get("window").width/2, padding:10, alignItems:"center"}, postType=="quotes"?{borderBottomColor:primaryColor()}:{borderBottomColor:"white"}]}>
