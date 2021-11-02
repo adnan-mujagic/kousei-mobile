@@ -9,6 +9,7 @@ import LogInScreen from './LogInScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../slices/mainSlice';
+import ConversationsScreen from './ConversationsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,6 +46,10 @@ const MainTabNavigator = () => {
                 else if(route.name ==="LogIn"){
                   iconName= focused? "log-in": "log-in-outline"
                 }
+
+                else if(route.name ==="Conversations"){
+                  iconName = focused ? "paper-plane" : "paper-plane-outline"
+                }
     
                 // You can return any component that you like here!
                 return <Ionicons name={iconName} size={size} color={color} />;
@@ -57,6 +62,7 @@ const MainTabNavigator = () => {
           >
             <Tab.Screen name="Home" component={HomeStackScreen} options={{headerShown:false}} />
             <Tab.Screen name="Feed" component={Feed} options={{headerShown:false}} />
+            {loggedIn && <Tab.Screen name="Conversations" component={ConversationsScreen} options={{headerShown: false}} />}
             {!loggedIn && <Tab.Screen name="LogIn" component={LogInScreen} options={{headerShown:false}}/>}
           </Tab.Navigator>
       

@@ -15,6 +15,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { selectRequestedUser, selectToken, selectUser, setPosts, setRequestedUser, setUser } from '../slices/mainSlice'
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/core'
+import Fire from '../Fire'
 
 const ProfileScreen = () => {
 
@@ -118,6 +119,22 @@ const ProfileScreen = () => {
         setIsFollowed(!isFollowed)
     }
 
+    const onMessagePress = () => {
+        Fire.db().collection("conversations").where("participants", "in", [[user._id, requestedUser._id], [requestedUser._id, user._id]])
+            .get()
+            .then((querySnapshot) => {
+                navigation.navigate("ChatScreen",{convoId: querySnapshot.docs[0].id})
+            })
+            .catch((error) => {
+                console.log("Error getting document (probably doesn't exist), trying to create it!")
+                Fire.db().collection("conversations").doc().set({
+                    participants: [user._id, requestedUser._id],
+                }).then(() => {
+                    onMessagePress();
+                })
+            })
+    }
+
     if(!requestedUser.all_fetched){
         return (
             <View style={{flex:1, backgroundColor:"white"}}>
@@ -156,7 +173,12 @@ const ProfileScreen = () => {
             </View>
             </View>
             <View>
-                {user._id != requestedUser._id? <CustomButton onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} title={isFollowed?"Unfollow":"Follow"} /> : <CustomButton onPress={onEditProfilePress} title="Edit Profile"/>}
+                {user._id != requestedUser._id?
+                    <View style={{flexDirection:"row"}}> 
+                    <CustomButton onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} title={isFollowed?"Unfollow":"Follow"} /> 
+                    <CustomButton title="Message" onPress={() => onMessagePress()}/>
+                    </View> : 
+                    <CustomButton onPress={onEditProfilePress} title="Edit Profile"/>}
             </View>
             <View style={[generalMainStyle.row,{ borderBottomColor:grayColor(), borderBottomWidth:0.5}]}>
                 <TouchableOpacity disabled={postType=="quotes"} onPress={()=>onQuotesPress()} style={[{ borderBottomWidth:0.5, width: Dimensions.get("window").width/2, padding:10, alignItems:"center"}, postType=="quotes"?{borderBottomColor:primaryColor()}:{borderBottomColor:"white"}]}>

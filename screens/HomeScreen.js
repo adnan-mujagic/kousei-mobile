@@ -169,7 +169,7 @@ const HomeScreen = () => {
             </TouchableOpacity>
         </View>}
         <AppHeader modalOpen={modalOpen} modalDisabled={user?false:true} setModalOpen={setModalOpen}/>
-        {user && <View style={{position:"absolute", marginBottom:10, width: Dimensions.get("window").width-20, bottom:0, paddingVertical:10, backgroundColor:"white", elevation:5, borderRadius:5, left:10, zIndex:20}}>
+        {(user && userList.length!=0) && <View style={{position:"absolute", marginBottom:10, width: Dimensions.get("window").width-20, bottom:0, paddingVertical:10, backgroundColor:"white", elevation:5, borderRadius:5, left:10, zIndex:20}}>
         <Text style={{marginBottom:10, fontWeight:"bold", marginLeft:10}}>Recent Users</Text>
         <FlatList 
             data={userList}
