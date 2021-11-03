@@ -78,7 +78,7 @@ const EditProfile = () => {
                 />
                 </View>
             </View>
-            <CustomButton onPress={onSubmit} disabled={areEqual(initialState, body)} title="Submit" type={areEqual(body, initialState)?undefined: "solid"}/>
+            <CustomButton onPress={onSubmit} responsive disabled={areEqual(initialState, body)} title="Submit" type={areEqual(body, initialState)?undefined: "solid"}/>
             
         </View>
     )

@@ -56,6 +56,10 @@ const ProfileScreen = () => {
         navigation.navigate("EditProfile")
     }
 
+    const onEditInterestsPress = () => {
+        navigation.navigate("EditInterests")
+    }
+
     const onQuotesPress = () => {
         console.log("quotes pressed")
         setPostType("quotes")
@@ -178,7 +182,10 @@ const ProfileScreen = () => {
                     <CustomButton responsive numCols={2} onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} title={isFollowed?"Unfollow":"Follow"} /> 
                     <CustomButton responsive numCols={2} title="Message" onPress={() => onMessagePress()}/>
                     </View> : 
-                    <CustomButton onPress={onEditProfilePress} responsive title="Edit Profile"/>}
+                    <View style={{flexDirection:"row"}}>
+                    <CustomButton onPress={onEditProfilePress} responsive numCols={2} title="Edit Profile"/>
+                    <CustomButton onPress={onEditInterestsPress} responsive numCols={2} title="Edit Interests"/>
+                    </View>}
             </View>
             <View style={[generalMainStyle.row,{ borderBottomColor:grayColor(), borderBottomWidth:0.5}]}>
                 <TouchableOpacity disabled={postType=="quotes"} onPress={()=>onQuotesPress()} style={[{ borderBottomWidth:0.5, width: Dimensions.get("window").width/2, padding:10, alignItems:"center"}, postType=="quotes"?{borderBottomColor:primaryColor()}:{borderBottomColor:"white"}]}>

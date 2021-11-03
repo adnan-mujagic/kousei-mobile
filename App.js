@@ -10,6 +10,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import PositionDetails from './screens/PositionDetails';
 import EditProfile from './screens/EditProfile';
 import ChatScreen from './screens/ChatScreen';
+import EditInterests from './screens/EditInterests';
 
 const MainStack = createNativeStackNavigator()
 
@@ -23,6 +24,7 @@ export default function App() {
           <MainStack.Screen name="ProfileScreen" component={ProfileScreen} options={{headerShown:false}}/>
           <MainStack.Screen name="PositionDetails" component={PositionDetails} options={{headerShown:false}}/>
           <MainStack.Screen name="EditProfile" component={EditProfile} options={{headerShown:false}}/>
+          <MainStack.Screen name="EditInterests" component={EditInterests} options={{headerShown:false}}/>
           <MainStack.Screen name="ChatScreen" component={ChatScreen} options={{headerShown:false}} />
         </MainStack.Navigator>
       </NavigationContainer>

@@ -85,8 +85,8 @@ const HomeScreen = () => {
                 const usersToShowOnMap = await fetchDataWithoutAuth("/users/", "GET");
                 if(usersToShowOnMap?.data){
                     const {longitude, latitude, updated} = location;
-                    dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data, user)));
-                    let unorderedUsers = getMappableUnmerged(usersToShowOnMap.data, user);
+                    dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data, user, true)));
+                    let unorderedUsers = transformToMappableUsersOnly(usersToShowOnMap.data, user);
                     setUserList(unorderedUsers.sort(recencyCompare));
                 }
             }else{

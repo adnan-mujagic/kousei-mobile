@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../slices/mainSlice';
 import ConversationsScreen from './ConversationsScreen';
+import lightBlack from '../general_functions/lightBlack';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,7 +58,7 @@ const MainTabNavigator = () => {
               
               tabBarShowLabel:false,
               tabBarActiveTintColor: primaryColor(),
-              tabBarInactiveTintColor: 'gray',
+              tabBarInactiveTintColor: lightBlack(),
             })}
           >
             <Tab.Screen name="Home" component={HomeStackScreen} options={{headerShown:false}} />
