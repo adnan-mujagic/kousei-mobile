@@ -24,7 +24,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.adnanmujagic.kouseimobile"
+      "package": "com.adnanmujagic.kouseimobile",
+      "config":{
+        "googleMaps":{
+          "apiKey":"AIzaSyA-aj_vheGqWNBYF_BelvZVVDzgq5vr9Vw"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
