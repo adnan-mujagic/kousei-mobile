@@ -87,10 +87,8 @@ const HomeScreen = () => {
                     const {longitude, latitude, updated} = location;
                     dispatch(setMappedUsers(transformToMappableUsersOnly(usersToShowOnMap.data, user, true)));
                     let unorderedUsers = transformToMappableUsersOnly(usersToShowOnMap.data, user);
-                    setUserList(unorderedUsers.sort(recencyCompare));
+                    setUserList(unorderedUsers);
                 }
-            }else{
-                Alert.alert("Tip", "Log in to show users on the map!")
             }
         }
         updateData().then(()=>getMappedUsers())

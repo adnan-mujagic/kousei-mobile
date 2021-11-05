@@ -179,12 +179,12 @@ const ProfileScreen = () => {
             <View>
                 {user._id != requestedUser._id?
                     <View style={{flexDirection:"row"}}> 
-                    <CustomButton responsive numCols={2} onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} title={isFollowed?"Unfollow":"Follow"} /> 
-                    <CustomButton responsive numCols={2} title="Message" onPress={() => onMessagePress()}/>
+                    <CustomButton responsive numCols={2} type="solid" onPress={isFollowed?()=>handleFollowUnfollow("unfollow", requestedUser._id):()=>handleFollowUnfollow("follow",requestedUser._id)} title={isFollowed?"Unfollow":"Follow"} /> 
+                    <CustomButton responsive numCols={2} type="solid" title="Message" onPress={() => onMessagePress()}/>
                     </View> : 
                     <View style={{flexDirection:"row"}}>
-                    <CustomButton onPress={onEditProfilePress} responsive numCols={2} title="Edit Profile"/>
-                    <CustomButton onPress={onEditInterestsPress} responsive numCols={2} title="Edit Interests"/>
+                    <CustomButton onPress={onEditProfilePress} type="solid" responsive numCols={2} title="Edit Profile"/>
+                    <CustomButton onPress={onEditInterestsPress} type="solid" responsive numCols={2} title="Edit Interests"/>
                     </View>}
             </View>
             <View style={[generalMainStyle.row,{ borderBottomColor:grayColor(), borderBottomWidth:0.5}]}>

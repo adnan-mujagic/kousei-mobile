@@ -26,7 +26,7 @@ const generalMainStyle = StyleSheet.create({
         padding:8,
         backgroundColor:primaryColor(),
         color:"white",
-        margin:10,
+        marginLeft:10,
         borderRadius:3,
         borderColor:grayColor(),
         borderWidth:0.5,

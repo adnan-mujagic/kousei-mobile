@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ListItem from '../components/ListItem';
 import calculateEstimatedPosition from '../general_functions/calculateEstimatedPosition';
 import { AntDesign } from '@expo/vector-icons';
 import recencyCompare from '../general_functions/recencyCompare';
 import primaryColor from '../general_styles/primaryColor';
 import grayColor from '../general_styles/grayColor';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../slices/mainSlice';
+import { useNavigation } from '@react-navigation/core';
 
 const PositionDetails = ({route}) => {
 
     const users = route.params;
+
+    const navigation = useNavigation()
+
+    const loggedInUser = useSelector(selectUser)
 
     const [estimatedCoordinates, setEstimatedCoordinates] = useState(null);
 
@@ -38,6 +45,12 @@ const PositionDetails = ({route}) => {
             <View>
             </View>
             </View>
+            {loggedInUser.interests.length == 0 && <View style={{backgroundColor:"purple", padding:10, borderRadius:10, margin:10}}>
+                <Text style={{color:"white"}}>Make sure to have at least one interest so we can show your interests overlap with other users! </Text>
+                <TouchableOpacity onPress={()=>{navigation.navigate("EditInterests")}} style={{backgroundColor:"white", padding:10, borderRadius:10, marginTop:10}}>
+                    <Text style={{textAlign:"center"}}>Edit Interests</Text>
+                </TouchableOpacity>
+            </View>}
             <FlatList 
                 data={recentUsers}
                 keyExtractor={(item)=>item._id.toString()}

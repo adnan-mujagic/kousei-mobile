@@ -61,7 +61,7 @@ const CustomMapMarker = ({user}) => {
         <Marker title={"View Position Details"} onCalloutPress={()=>navigation.navigate("PositionDetails", user)} coordinate={user[0].coordinates}>
         <View style={{}}>
             
-            <View style={{borderWidth:0.3, borderColor:grayColor(), backgroundColor:"white", padding:10, borderRadius:5, maxWidth:150, maxHeigth:200}}>
+            <View style={{ backgroundColor:"white", padding:10, borderRadius:5, maxWidth:150, maxHeigth:200}}>
             {(checkIfLoggedInUserHere() && !loggedInUser?.shown_on_map) && <MarkerWarning message="Only you can view your location! If you want to be visible to others change your profile settings!"/>}
             <View style={{}}>
                 <FlatList

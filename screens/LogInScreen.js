@@ -54,7 +54,6 @@ const LogInScreen = () => {
                 const decoded = jwtDecode(res.token);
                 const userData = await getUserData(decoded.uid)
                 dispatch(setUser(userData));
-                navigation.navigate("Home")
             }
             else{
                 Alert.alert(res.status, "Please try again!")
@@ -71,7 +70,6 @@ const LogInScreen = () => {
     }
 
     const onRegister = async () => {
-        console.log("REGISTER PRESSED")
         if(checkForEmptyFields(credentials)){
             Alert.alert("Warning", "All the fields should be filled!")
             return;
@@ -87,7 +85,6 @@ const LogInScreen = () => {
                 const user = await getUserData(decoded.uid);
                 if(user){
                     dispatch(setUser(user));
-                    navigation.navigate("Home");
                 }
                 else{
                     Alert.alert("Error", "Problem getting user data!")
@@ -109,7 +106,7 @@ const LogInScreen = () => {
                 <Text style={{marginHorizontal:10, marginTop:10, fontSize:18, fontWeight:"bold"}}>Enter your credentials</Text>
                 <CustomInput value={credentials.username} fieldName="username" placeholder={"Username..."} onChangeText={onChangeText}/>
                 <CustomInput value={credentials.password} fieldName="password" placeholder={"Password..."} password onChangeText={onChangeText}/>
-                <CustomButton title="LOG IN" onPress={onLogin} type="solid" disabled={buttonsDisabled}/>
+                <CustomButton rightMarginRequired title="LOG IN" onPress={onLogin} type="solid" disabled={buttonsDisabled}/>
                 <TouchableOpacity onPress={()=>setLoginOrSignUp("sign-up")} style={{marginBottom:10, marginLeft:10}}>
                     <Text style={{fontSize:16}}>Want to sign up?</Text>
                 </TouchableOpacity>
@@ -121,7 +118,7 @@ const LogInScreen = () => {
                 <CustomInput value={credentials.email} fieldName="email" placeholder={"E-Mail..."} onChangeText={onChangeText}/>
                 <CustomInput value={credentials.full_name} fieldName="full_name" placeholder={"Full Name..."} onChangeText={onChangeText}/>
                 <NumberPicker value={credentials.age} setValue={onAgeChange} placeholder="Age:"/>
-                <CustomButton title="REGISTER" onPress={onRegister} type="solid" disabled={buttonsDisabled}/>
+                <CustomButton rightMarginRequired title="REGISTER" onPress={onRegister} type="solid" disabled={buttonsDisabled}/>
                 <TouchableOpacity onPress={()=>setLoginOrSignUp("login")} style={{marginBottom:10, marginLeft:10}}>
                     <Text style={{fontSize:16}}>Want to log in?</Text>
                 </TouchableOpacity>

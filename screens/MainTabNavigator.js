@@ -61,8 +61,8 @@ const MainTabNavigator = () => {
               tabBarInactiveTintColor: lightBlack(),
             })}
           >
-            <Tab.Screen name="Home" component={HomeStackScreen} options={{headerShown:false}} />
-            <Tab.Screen name="Feed" component={Feed} options={{headerShown:false}} />
+            {loggedIn && <Tab.Screen name="Home" component={HomeStackScreen} options={{headerShown:false}} />}
+            {loggedIn && <Tab.Screen name="Feed" component={Feed} options={{headerShown:false}} />}
             {loggedIn && <Tab.Screen name="Conversations" component={ConversationsScreen} options={{headerShown: false}} />}
             {!loggedIn && <Tab.Screen name="LogIn" component={LogInScreen} options={{headerShown:false}}/>}
           </Tab.Navigator>
